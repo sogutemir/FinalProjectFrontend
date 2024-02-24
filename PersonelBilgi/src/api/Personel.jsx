@@ -32,8 +32,7 @@ async function getPersonel() {
     alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
   }
 }
-
-export { getAllPersonel, getResource };
+export { getAllPersonel, getResourcePhoto };
 
 async function getProject(id) {
   try {
@@ -51,7 +50,7 @@ async function getProject(id) {
 }
 export { getPersonel, getProject };
 
-async function getResource(id) {
+async function getResourcePhoto(id) {
   try {
     const token = Cookies.get("user_token");
     const url = `http://localhost:8080/resourceFile/image/${id}`;
@@ -65,3 +64,59 @@ async function getResource(id) {
     alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
   }
 }
+
+//Yeni eklenenler
+
+async function getFilesByPersonelId(personelId) {
+  try {
+    const token = Cookies.get("user_token");
+    const url = `http://localhost:8080/file/${personelId}`;
+
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    };
+    return await axios.get(url, { headers: headers });
+  } catch (error) {
+    console.error("Error getting files by personel ID:", error);
+    alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
+  }
+}
+
+async function getProjectsByPersonelId(personelId) {
+  try {
+    const token = Cookies.get("user_token");
+    const url = `http://localhost:8080/project/${personelId}`;
+
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    };
+    return await axios.get(url, { headers: headers });
+  } catch (error) {
+    console.error("Error getting projects by personel ID:", error);
+    alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
+  }
+}
+
+async function getActivitiesByPersonelId(personelId) {
+  try {
+    const token = Cookies.get("user_token");
+    const url = `http://localhost:8080/activity/${personelId}`;
+
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    };
+    return await axios.get(url, { headers: headers });
+  } catch (error) {
+    console.error("Error getting activities by personel ID:", error);
+    alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
+  }
+}
+
+export {
+  getFilesByPersonelId,
+  getProjectsByPersonelId,
+  getActivitiesByPersonelId,
+};

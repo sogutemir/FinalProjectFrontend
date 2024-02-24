@@ -140,3 +140,87 @@
 }
 
 /*  Personels.jsx   */
+
+
+.cards-wrapper {
+  display: flex;
+  justify-content: center; /* Centers the cards horizontally in the container */
+  gap: 20px; /* Adds space between the cards */
+  flex-wrap: wrap; /* Allows cards to wrap to the next line on smaller screens */
+  margin: 16px 0; /* Adds vertical margin for spacing */
+}
+
+.cards-container {
+  display: flex; /* This will line up the children (cards) side by side */
+  justify-content: center; /* This will center the cards horizontally */
+  align-items: center; /* This will center the cards vertically */
+  flex-wrap: wrap; /* This allows the cards to wrap onto the next line on smaller screens */
+  gap: 20px; /* This gives space between the cards */
+}
+
+.personel-card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 300px;
+  margin: 0 10px;
+  position: relative;
+}
+
+.personel-card img {
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+
+.personel-card h2 {
+  color: #e74c3c;
+  margin-bottom: 5px;
+}
+
+.personel-card h3 {
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.personel-card p {
+  color: #777;
+  margin-bottom: 5px;
+}
+
+.personel-card button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.personel-card button:first-of-type {
+  left: -30px;
+}
+
+.personel-card button:last-of-type {
+  right: -30px;
+}
+
+button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+button:focus {
+  outline: none;
+}
+
