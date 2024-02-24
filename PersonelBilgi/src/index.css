@@ -224,3 +224,29 @@ button:focus {
   outline: none;
 }
 
+
+.slide-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px; 
+}
+
+.slide-card {
+  border: 1px solid #ccc; 
+  padding: 10px;
+  border-radius: 5px;
+  width: 300px; 
+  text-align: center;
+}
+
+.slide-image {
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.slide-description {
+  font-size: 14px;
+  color: #333;
+}

@@ -1,121 +1,95 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-async function getAllPersonel() {
-  try {
-    const token = Cookies.get("user_token");
-    const url = "http://localhost:8080/personel/all";
+const API_BASE_URL = "http://localhost:8080";
 
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    };
-    return await axios.get(url, { headers: headers });
+const getHeaders = () => {
+  const token = Cookies.get("user_token");
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+};
+
+const getAllPersonel = async () => {
+  try {
+    const url = `${API_BASE_URL}/personel/all`;
+    return await axios.get(url, { headers: getHeaders() });
   } catch (error) {
-    console.error("Error getting personel:", error);
+    console.error("Error getting all personnel:", error);
     alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
   }
-}
+};
 
-async function getPersonel() {
+const getPersonel = async (id) => {
   try {
-    const token = Cookies.get("user_token");
-    const url = `http://localhost:8080/personel/${id}`;
-
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    };
-    return await axios.get(url, { headers: headers });
+    const url = `${API_BASE_URL}/personel/${id}`;
+    return await axios.get(url, { headers: getHeaders() });
   } catch (error) {
-    console.error("Error getting personel:", error);
+    console.error("Error getting personnel:", error);
     alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
   }
-}
-export { getAllPersonel, getResourcePhoto };
+};
 
-async function getProject(id) {
+const getProject = async (id) => {
   try {
-    const token = Cookies.get("user_token");
-    const url = `http://localhost:8080/project/${id}`;
-
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-    return await axios.get(url, { headers: headers });
+    const url = `${API_BASE_URL}/project/${id}`;
+    return await axios.get(url, { headers: getHeaders() });
   } catch (error) {
-    console.error("Error getting Project:", error);
+    console.error("Error getting project:", error);
     alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
   }
-}
-export { getPersonel, getProject };
+};
 
-async function getResourcePhoto(id) {
+const getResourcePhoto = async (id) => {
   try {
-    const token = Cookies.get("user_token");
-    const url = `http://localhost:8080/resourceFile/image/${id}`;
-
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-    return await axios.get(url, { headers: headers, responseType: "blob" });
+    const url = `${API_BASE_URL}/resourceFile/image/${id}`;
+    return await axios.get(url, {
+      headers: getHeaders(),
+      responseType: "blob",
+    });
   } catch (error) {
-    console.error("Error getting Photo:", error);
+    console.error("Error getting photo:", error);
     alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
   }
-}
+};
 
-//Yeni eklenenler
-
-async function getFilesByPersonelId(personelId) {
+const getFilesByPersonelId = async (personelId) => {
   try {
-    const token = Cookies.get("user_token");
-    const url = `http://localhost:8080/file/${personelId}`;
-
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    };
-    return await axios.get(url, { headers: headers });
+    const url = `${API_BASE_URL}/file/${personelId}`;
+    return await axios.get(url, { headers: getHeaders() });
   } catch (error) {
-    console.error("Error getting files by personel ID:", error);
+    console.error("Error getting files by personnel ID:", error);
     alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
   }
-}
+};
 
-async function getProjectsByPersonelId(personelId) {
+const getProjectsByPersonelId = async (personelId) => {
   try {
-    const token = Cookies.get("user_token");
-    const url = `http://localhost:8080/project/${personelId}`;
-
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    };
-    return await axios.get(url, { headers: headers });
+    const url = `${API_BASE_URL}/project/${personelId}`;
+    return await axios.get(url, { headers: getHeaders() });
   } catch (error) {
-    console.error("Error getting projects by personel ID:", error);
+    console.error("Error getting projects by personnel ID:", error);
     alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
   }
-}
+};
 
-async function getActivitiesByPersonelId(personelId) {
+const getActivitiesByPersonelId = async (personelId) => {
   try {
-    const token = Cookies.get("user_token");
-    const url = `http://localhost:8080/activity/${personelId}`;
-
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    };
-    return await axios.get(url, { headers: headers });
+    const url = `${API_BASE_URL}/activity/${personelId}`;
+    return await axios.get(url, { headers: getHeaders() });
   } catch (error) {
-    console.error("Error getting activities by personel ID:", error);
+    console.error("Error getting activities by personnel ID:", error);
     alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
   }
-}
+};
+
+
 
 export {
+  getAllPersonel,
+  getPersonel,
+  getResourcePhoto,
   getFilesByPersonelId,
   getProjectsByPersonelId,
   getActivitiesByPersonelId,

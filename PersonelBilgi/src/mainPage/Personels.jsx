@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  getAllPersonel,
-  getResourcePhoto as fetchResource,
-} from "../api/Personel";
+import { getAllPersonel, getResourcePhoto } from "../api/Personel";
+import { getSlides } from "../api/Slide";
 
 function Personels() {
   const [personels, setPersonels] = useState([]);
@@ -10,57 +8,103 @@ function Personels() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [employedThisMonth, setEmployedThisMonth] = useState([]);
   const [latestPersonel, setLatestPersonel] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [slides, setSlides] = useState([]);
+  const [slidePhotoUrls, setSlidePhotoUrls] = useState({});
 
   useEffect(() => {
     const fetchAllPersonels = async () => {
+      setIsLoading(true);
       try {
         const response = await getAllPersonel();
-        setPersonels(response.data);
+        if (response.status === 200) {
+          setPersonels(response.data);
 
-        const fetchPromises = response.data.map((personel) =>
-          fetchResource(personel.photoId)
-            .then((response) => ({
-              id: personel.id,
-              url: URL.createObjectURL(response.data),
-            }))
-            .catch((error) => ({ id: personel.id, url: "" }))
-        );
+          const fetchPromises = response.data.map((personel) =>
+            getResourcePhoto(personel.photoId)
+              .then((response) => ({
+                id: personel.id,
+                url: URL.createObjectURL(response.data),
+              }))
+              .catch((error) => ({ id: personel.id, url: "" }))
+          );
 
-        const results = await Promise.all(fetchPromises);
-        const urls = results.reduce((acc, current) => {
-          acc[current.id] = current.url;
-          return acc;
-        }, {});
+          const results = await Promise.all(fetchPromises);
+          const urls = results.reduce((acc, current) => {
+            acc[current.id] = current.url;
+            return acc;
+          }, {});
 
-        setResourceUrls(urls);
-        setEmployedThisMonth(
-          response.data.filter((personel) =>
-            isEmployedThisMonth(personel.employmentStartDate)
-          )
-        );
+          setResourceUrls(urls);
+          setEmployedThisMonth(
+            response.data.filter((personel) =>
+              isEmployedThisMonth(personel.employmentStartDate)
+            )
+          );
 
-        // Set the latest personel
-        const latestStartDate = Math.max(
-          ...response.data.map(
-            (personel) => new Date(personel.employmentStartDate)
-          )
-        );
-        setLatestPersonel(
-          response.data.find(
-            (personel) =>
-              new Date(personel.employmentStartDate).getTime() ===
-              latestStartDate
-          )
-        );
+          const latestStartDate = Math.max(
+            ...response.data.map(
+              (personel) => new Date(personel.employmentStartDate)
+            )
+          );
+          setLatestPersonel(
+            response.data.find(
+              (personel) =>
+                new Date(personel.employmentStartDate).getTime() ===
+                latestStartDate
+            )
+          );
+        } else {
+          setError("Failed to load data from server");
+        }
       } catch (error) {
-        console.error("Error fetching personels", error);
+        setError("An error occurred while fetching personnel data");
+        console.error("Error fetching personnel", error);
       }
+      setIsLoading(false);
     };
 
     fetchAllPersonels();
   }, []);
 
-  // Utility function to check employment date
+  useEffect(() => {
+    const fetchSlides = async () => {
+      setIsLoading(true);
+      try {
+        const slidesResponse = await getSlides();
+        if (slidesResponse.status === 200) {
+          setSlides(slidesResponse.data);
+
+          const slidePhotoPromises = slidesResponse.data.map((slide) =>
+            getResourcePhoto(slide.photoId)
+              .then((photoResponse) => ({
+                id: slide.id,
+                url: URL.createObjectURL(photoResponse.data),
+              }))
+              .catch((error) => ({ id: slide.id, url: "" }))
+          );
+
+          const slidePhotos = await Promise.all(slidePhotoPromises);
+          const slideUrls = slidePhotos.reduce((acc, current) => {
+            acc[current.id] = current.url;
+            return acc;
+          }, {});
+
+          setSlidePhotoUrls(slideUrls);
+        } else {
+          setError("Failed to load slides from server");
+        }
+      } catch (error) {
+        setError("An error occurred while fetching slides");
+        console.error("Error fetching slides", error);
+      }
+      setIsLoading(false);
+    };
+
+    fetchSlides();
+  }, []);
+
   const isEmployedThisMonth = (startDate) => {
     const employmentDate = new Date(startDate);
     const currentDate = new Date();
@@ -79,6 +123,14 @@ function Personels() {
   const handleNextClick = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % employedThisMonth.length);
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <>
@@ -153,6 +205,23 @@ function Personels() {
                 ).toLocaleDateString()}
               </p>
             </div>
+          </div>
+        )}
+        {slides.length > 0 && (
+          <div className="slide-container">
+            <button onClick={handlePrevClick}>{"<"}</button>
+            <div className="slide-card">
+              <h2>Haberler</h2>
+              <img
+                src={slidePhotoUrls[slides[currentIndex].id]}
+                alt="Slide"
+                className="slide-image"
+              />
+              <p className="slide-description">
+                {slides[currentIndex].description}
+              </p>
+            </div>
+            <button onClick={handleNextClick}>{">"}</button>
           </div>
         )}
       </div>
