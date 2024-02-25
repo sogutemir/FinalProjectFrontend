@@ -16,7 +16,7 @@ const getAllPersonel = async () => {
     const url = `${API_BASE_URL}/personel/all`;
     return await axios.get(url, { headers: getHeaders() });
   } catch (error) {
-    console.error("Error getting all personnel:", error);
+    console.error("Error getting all personel:", error);
     alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
   }
 };
@@ -26,14 +26,14 @@ const getPersonelById = async (id) => {
     const url = `${API_BASE_URL}/personel/${id}`;
     return await axios.get(url, { headers: getHeaders() });
   } catch (error) {
-    console.error("Error getting personnel:", error);
+    console.error("Error getting personel:", error);
     alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
   }
 };
 
-const getProject = async (id) => {
+const getProjectByPersonelId = async (id) => {
   try {
-    const url = `${API_BASE_URL}/project/${id}`;
+    const url = `${API_BASE_URL}/project/getByPersonelId/${id}`;
     return await axios.get(url, { headers: getHeaders() });
   } catch (error) {
     console.error("Error getting project:", error);
@@ -59,7 +59,7 @@ const getFileByPersonelId = async (personelId) => {
     const url = `${API_BASE_URL}/file/getByPersonelId/${personelId}`;
     return await axios.get(url, { headers: getHeaders() });
   } catch (error) {
-    console.error("Error getting files by personnel ID:", error);
+    console.error("Error getting files by personel ID:", error);
     alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
   }
 };
@@ -69,17 +69,17 @@ const getProjectsByPersonelId = async (personelId) => {
     const url = `${API_BASE_URL}/project/${personelId}`;
     return await axios.get(url, { headers: getHeaders() });
   } catch (error) {
-    console.error("Error getting projects by personnel ID:", error);
+    console.error("Error getting projects by personel ID:", error);
     alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
   }
 };
 
 const getActivitiesByPersonelId = async (personelId) => {
   try {
-    const url = `${API_BASE_URL}/activity/${personelId}`;
+    const url = `${API_BASE_URL}/activity/getByPersonelId${personelId}`;
     return await axios.get(url, { headers: getHeaders() });
   } catch (error) {
-    console.error("Error getting activities by personnel ID:", error);
+    console.error("Error getting activities by personel ID:", error);
     alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
   }
 };
@@ -89,7 +89,7 @@ const getEducationByPersonelId = async (personelId) => {
     const url = `${API_BASE_URL}/education/getByPersonelId/${personelId}`;
     return await axios.get(url, { headers: getHeaders() });
   } catch (error) {
-    console.error("Error getting education by personnel ID:", error);
+    console.error("Error getting education by personel ID:", error);
     alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
   }
 };
@@ -102,4 +102,5 @@ export {
   getProjectsByPersonelId,
   getActivitiesByPersonelId,
   getEducationByPersonelId,
+  getProjectByPersonelId,
 };

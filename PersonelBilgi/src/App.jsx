@@ -23,7 +23,7 @@ function App() {
           }
         />
         <Route
-          path="/personal-detail"
+          path="/personal-detail/:id"
           element={
             <PrivateRoute>
               <LayoutWithNavbar>

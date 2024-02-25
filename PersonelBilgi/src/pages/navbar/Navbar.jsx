@@ -6,7 +6,12 @@ function Navbar() {
       <nav className="navbar" role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
           <a className="navbar-item" href="https://bulma.io">
-            <img src="\src\assets\img\logo.png" width="112" height="28" />
+            <img
+              className="navbar-logo"
+              src="\src\assets\img\logo.png"
+              width="112"
+              height="28"
+            />
           </a>
 
           <a
@@ -27,18 +32,6 @@ function Navbar() {
             <a className="navbar-item">Genel</a>
 
             <a className="navbar-item">Rehber</a>
-
-            <div className="navbar-item has-dropdown is-hoverable">
-              <a className="navbar-link">Organizasyon Şeması</a>
-
-              <div className="navbar-dropdown">
-                <a className="navbar-item">About</a>
-                <a className="navbar-item">Jobs</a>
-                <a className="navbar-item">Contact</a>
-                <hr className="navbar-divider" />
-                <a className="navbar-item">Report an issue</a>
-              </div>
-            </div>
           </div>
         </div>
       </nav>

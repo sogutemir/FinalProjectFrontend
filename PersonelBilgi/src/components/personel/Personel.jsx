@@ -2,106 +2,85 @@ import React, { useState, useEffect } from "react";
 import { getPersonelById, getResourcePhoto } from "../../api/Personel";
 import "./Personel.css";
 
-function PersonnelDetails({ personnelId = 1 }) {
-  const [personnelPhotoUrl, setPersonnelPhotoUrl] = useState("");
-  const [personnelDetails, setPersonnelDetails] = useState(null);
+function personelDetails({ personelId }) {
+  const [personelPhotoUrl, setpersonelPhotoUrl] = useState("");
+  const [personelDetails, setpersonelDetails] = useState(null);
   const [error, setError] = useState("");
+  const excludedKeys = ["id", "photoId"];
 
   useEffect(() => {
-    const fetchPersonnelDetails = async () => {
+    const fetchpersonelDetails = async () => {
       try {
-        const detailsResponse = await getPersonelById(personnelId);
+        const detailsResponse = await getPersonelById(personelId);
         if (detailsResponse.status === 200) {
-          setPersonnelDetails(detailsResponse.data);
+          setpersonelDetails(detailsResponse.data);
 
           const photoId = detailsResponse.data.photoId;
           const photoResponse = await getResourcePhoto(photoId);
           if (photoResponse.status === 200) {
-            setPersonnelPhotoUrl(URL.createObjectURL(photoResponse.data));
+            setpersonelPhotoUrl(URL.createObjectURL(photoResponse.data));
           } else {
-            setError("Failed to load personnel photo");
+            setError("Failed to load personel photo");
           }
         } else {
-          setError("Failed to load personnel details");
+          setError("Failed to load personel details");
         }
       } catch (error) {
-        setError("An error occurred while fetching personnel details");
-        console.error("Error fetching personnel details", error);
+        setError("An error occurred while fetching personel details");
+        console.error("Error fetching personel details", error);
       }
     };
 
-    if (personnelId) {
-      fetchPersonnelDetails();
+    if (personelId) {
+      fetchpersonelDetails();
     }
-  }, [personnelId]);
+  }, [personelId]);
 
   if (error) {
     return <div>Error: {error}</div>;
   }
 
-  if (!personnelDetails) {
+  if (!personelDetails) {
     return <div>Loading...</div>;
   }
 
-  const initialPersonnelDetails = {
-    name: "",
-    surname: "",
-    identityNumber: "",
-    academicTitle: "",
-    email: "",
-    phone: "",
-    bloodType: "",
-    dateOfBirth: "",
-    emergencyContact: "",
-    emergencyContactPhone: "",
-    residenceAddress: "",
-    title: "",
-    position: "",
-    employmentStartDate: "",
-    registrationNo: "",
-    department: "",
-    Task: "",
-    personnelType: "",
-    workStatus: "",
-    serviceUsage: "",
-    roomNumber: "",
-    internalNumber: "",
-  };
-
   const handleChange = (e, fieldName) => {
-    setPersonnelDetails({ ...personnelDetails, [fieldName]: e.target.value });
+    setpersonelDetails({ ...personelDetails, [fieldName]: e.target.value });
   };
 
   return (
-    <div className="personnel-details-container">
+    <div className="personel-details-container">
       <div className="personal-info-section">
-        <h2>Kişisel</h2>
-        <div className="personnel-photo-section">
-          {personnelPhotoUrl ? (
+        <div className="personel-photo-section">
+          {personelPhotoUrl ? (
             <img
-              src={personnelPhotoUrl}
-              className="personnel-photo"
-              alt="Personnel"
+              src={personelPhotoUrl}
+              className="personel-photo"
+              alt="personel"
             />
           ) : (
             <div>Loading photo...</div>
           )}
         </div>
         <div className="personal-info">
-          {Object.entries(personnelDetails).map(([fieldName, value]) => (
-            <input
-              key={fieldName}
-              type="text"
-              value={value}
-              onChange={(e) => handleChange(e, fieldName)}
-              className="form-control"
-              placeholder={fieldName === "Task" ? "Çalışılan Proje" : fieldName}
-            />
-          ))}
+          {Object.entries(personelDetails)
+            .filter(([fieldName]) => !excludedKeys.includes(fieldName)) // Filter out excluded keys
+            .map(([fieldName, value]) => (
+              <input
+                key={fieldName}
+                type="text"
+                value={value}
+                onChange={(e) => handleChange(e, fieldName)}
+                className="form-control"
+                placeholder={
+                  fieldName === "Task" ? "Çalışılan Proje" : fieldName
+                }
+              />
+            ))}
         </div>
       </div>
     </div>
   );
 }
 
-export default PersonnelDetails;
+export default personelDetails;

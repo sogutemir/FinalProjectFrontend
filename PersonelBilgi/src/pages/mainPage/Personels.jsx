@@ -10,8 +10,10 @@ function Personels() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleRouteDetail = () => {
-    window.location.href = "http://localhost:5173/personal-detail";
+  const handleRouteDetail = (id) => {
+    console.log(id);
+    window.location.href = `http://localhost:5173/personal-detail/${id}`;
+    console.log("id", id);
   };
 
   useEffect(() => {
@@ -60,8 +62,8 @@ function Personels() {
           setError("Failed to load data from server");
         }
       } catch (error) {
-        setError("An error occurred while fetching personnel data");
-        console.error("Error fetching personnel", error);
+        setError("An error occurred while fetching personel data");
+        console.error("Error fetching personel", error);
       }
       setIsLoading(false);
     };
@@ -130,7 +132,9 @@ function Personels() {
               </td>
               <td className="personel-td">{personel.position}</td>
               <td className="personel-td">
-                <button onClick={handleRouteDetail}>More</button>
+                <button onClick={() => handleRouteDetail(personel.id)}>
+                  More
+                </button>
               </td>
             </tr>
           ))}

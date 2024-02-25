@@ -198,10 +198,25 @@ button:hover {
 /* Navbar.jsx */
 
 .navbar {
-  background-color: #fff;
+  background-color: #ff3939;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
   font-family: "Arial", sans-serif;
   padding: 20px 0;
+  position: relative;
+}
+
+.navbar::after {
+  content: "";
+  position: absolute;
+  right: 0; 
+  top: 0; 
+  bottom: 0;
+  width: 2px; 
+  background-color: #ffffff; 
+}
+
+.navbar-logo {
+  border-right: 1px solid #f0f0f0; 
 }
 
 .navbar-brand .navbar-item img {
@@ -217,14 +232,14 @@ button:hover {
 
 .navbar-item {
   padding: 10px 15px;
-  color: #4a4a4a;
+  color: #f0f0f0;
   text-transform: uppercase;
   font-size: 14px;
   font-weight: bold;
 }
 
 .navbar-burger {
-  color: #4a4a4a;
+  color: #f0f0f0;
 }
 
 .navbar-item.has-dropdown:hover .navbar-dropdown {
@@ -232,6 +247,7 @@ button:hover {
 }
 
 .navbar-dropdown {
+  color: #f0f0f0;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
   border: none;
 }

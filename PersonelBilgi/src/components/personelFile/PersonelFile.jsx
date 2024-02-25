@@ -2,29 +2,29 @@ import React, { useState, useEffect } from "react";
 import { getFileByPersonelId } from "../../api/Personel";
 import "./PersonelFile.css";
 
-function File({ personnelId }) {
+function PersonalFile({ personelId }) {
   const [fileDetails, setFileDetails] = useState(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchFileDetails = async () => {
       try {
-        const detailsResponse = await getFileByPersonelId(personnelId);
+        const detailsResponse = await getFileByPersonelId(personelId);
         if (detailsResponse.status === 200) {
           setFileDetails(detailsResponse.data);
         } else {
-          setError("Failed to load personnel details");
+          setError("Failed to load personel details");
         }
       } catch (error) {
-        setError("An error occurred while fetching personnel details");
-        console.error("Error fetching personnel details", error);
+        setError("An error occurred while fetching personel details");
+        console.error("Error fetching personel details", error);
       }
     };
 
-    if (personnelId) {
+    if (personelId) {
       fetchFileDetails();
     }
-  }, [personnelId]);
+  }, [personelId]);
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -33,13 +33,6 @@ function File({ personnelId }) {
   if (!fileDetails) {
     return <div>Loading...</div>;
   }
-
-  const fileInfo = [
-    { label: "Dosya Türü:", value: "fileName" },
-    { label: "Dosya Adı:", value: "fileType" },
-    { label: "Bölüm:", value: "section" },
-    { label: "Yüklenme Tarihi:", value: "uploadDate" },
-  ];
 
   return (
     <div className="file-container">
@@ -73,4 +66,4 @@ function File({ personnelId }) {
   );
 }
 
-export default File;
+export default PersonalFile;

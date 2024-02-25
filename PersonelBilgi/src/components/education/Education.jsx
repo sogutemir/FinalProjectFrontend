@@ -2,29 +2,29 @@ import React, { useState, useEffect } from "react";
 import { getEducationByPersonelId } from "../../api/Personel";
 import "./Education.css";
 
-function Education({ personnelId }) {
+function Education({ personelId }) {
   const [educationDetails, setEducationDetails] = useState([]);
   const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchEducationDetails = async () => {
       try {
-        const detailsResponse = await getEducationByPersonelId(personnelId);
+        const detailsResponse = await getEducationByPersonelId(personelId);
         if (detailsResponse.status === 200) {
           setEducationDetails(detailsResponse.data);
         } else {
-          setError("Failed to load personnel details");
+          setError("Failed to load personel details");
         }
       } catch (error) {
-        setError("An error occurred while fetching personnel details");
-        console.error("Error fetching personnel details", error);
+        setError("An error occurred while fetching personel details");
+        console.error("Error fetching personel details", error);
       }
     };
 
-    if (personnelId) {
+    if (personelId) {
       fetchEducationDetails();
     }
-  }, [personnelId]);
+  }, [personelId]);
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -59,7 +59,7 @@ function Education({ personnelId }) {
         ))}
       </tbody>
     </table>
-);
+  );
 }
 
 export default Education;

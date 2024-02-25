@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import { loginUser } from "/src/api/Login";
+import Cookies from "js-cookie";
 
 function LoginPage() {
   const [username, setUsername] = useState("");
@@ -8,6 +9,9 @@ function LoginPage() {
   async function handleLogin(event) {
     event.preventDefault();
     await loginUser(username, password);
+    if (Cookies.get("user_token")) {
+      window.location.reload();
+    }
   }
 
   return (

@@ -1,14 +1,22 @@
 .education-details-container {
-  width: 50%;
-  align-content: center;
+  margin: 20px auto;
+  padding: 20px;
+  width: 70%;
   border-collapse: collapse;
-  margin-top: 20px; 
-  margin-bottom: 100px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+}
+
+@media (max-width: 768px) {
+  .education-details-container {
+    padding: 10px;
+    margin: 10px auto;
+  }
 }
 
 .education-details-container th,
 .education-details-container td {
-  border: 1px solid #ddd; 
+  border: 1px solid #ddd;
   text-align: left;
   padding: 8px;
 }
@@ -18,7 +26,7 @@
 }
 
 .education-details-container tbody td {
-  background-color: #f9f9f9; 
+  background-color: #f9f9f9;
 }
 
 .education-details-container tbody tr:hover {
@@ -26,8 +34,8 @@
 }
 
 .education-info-section {
-  background-color: #4caf50; /* Matching the header background */
-  color: white;
+  background-color: #ff3939;
+  color: #f0f0f0;
   font-weight: bold;
   text-align: center;
 }
