@@ -1,0 +1,33 @@
+.education-details-container {
+  width: 50%;
+  align-content: center;
+  border-collapse: collapse;
+  margin-top: 20px; 
+  margin-bottom: 100px;
+}
+
+.education-details-container th,
+.education-details-container td {
+  border: 1px solid #ddd; 
+  text-align: left;
+  padding: 8px;
+}
+
+.education-details-container thead th {
+  font-weight: bold;
+}
+
+.education-details-container tbody td {
+  background-color: #f9f9f9; 
+}
+
+.education-details-container tbody tr:hover {
+  background-color: #ddd;
+}
+
+.education-info-section {
+  background-color: #4caf50; /* Matching the header background */
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}

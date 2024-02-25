@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getAllPersonel, getResourcePhoto } from "../api/Personel";
-import { getSlides } from "../api/Slide";
+import { getAllPersonel, getResourcePhoto } from "../../api/Personel";
 
 function Personels() {
   const [personels, setPersonels] = useState([]);
@@ -10,8 +9,10 @@ function Personels() {
   const [latestPersonel, setLatestPersonel] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [slides, setSlides] = useState([]);
-  const [slidePhotoUrls, setSlidePhotoUrls] = useState({});
+
+  const handleRouteDetail = () => {
+    window.location.href = "http://localhost:5173/personal-detail";
+  };
 
   useEffect(() => {
     const fetchAllPersonels = async () => {
@@ -68,43 +69,6 @@ function Personels() {
     fetchAllPersonels();
   }, []);
 
-  useEffect(() => {
-    const fetchSlides = async () => {
-      setIsLoading(true);
-      try {
-        const slidesResponse = await getSlides();
-        if (slidesResponse.status === 200) {
-          setSlides(slidesResponse.data);
-
-          const slidePhotoPromises = slidesResponse.data.map((slide) =>
-            getResourcePhoto(slide.photoId)
-              .then((photoResponse) => ({
-                id: slide.id,
-                url: URL.createObjectURL(photoResponse.data),
-              }))
-              .catch((error) => ({ id: slide.id, url: "" }))
-          );
-
-          const slidePhotos = await Promise.all(slidePhotoPromises);
-          const slideUrls = slidePhotos.reduce((acc, current) => {
-            acc[current.id] = current.url;
-            return acc;
-          }, {});
-
-          setSlidePhotoUrls(slideUrls);
-        } else {
-          setError("Failed to load slides from server");
-        }
-      } catch (error) {
-        setError("An error occurred while fetching slides");
-        console.error("Error fetching slides", error);
-      }
-      setIsLoading(false);
-    };
-
-    fetchSlides();
-  }, []);
-
   const isEmployedThisMonth = (startDate) => {
     const employmentDate = new Date(startDate);
     const currentDate = new Date();
@@ -141,6 +105,7 @@ function Personels() {
             <th className="personel-th">Name Surname</th>
             <th className="personel-th">Team Name Title</th>
             <th className="personel-th">Position</th>
+            <th className="personel-th">More</th>
           </tr>
         </thead>
         <tbody>
@@ -164,6 +129,9 @@ function Personels() {
                 {personel.teamName} {personel.teamName}
               </td>
               <td className="personel-td">{personel.position}</td>
+              <td className="personel-td">
+                <button onClick={handleRouteDetail}>More</button>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -205,23 +173,6 @@ function Personels() {
                 ).toLocaleDateString()}
               </p>
             </div>
-          </div>
-        )}
-        {slides.length > 0 && (
-          <div className="slide-container">
-            <button onClick={handlePrevClick}>{"<"}</button>
-            <div className="slide-card">
-              <h2>Haberler</h2>
-              <img
-                src={slidePhotoUrls[slides[currentIndex].id]}
-                alt="Slide"
-                className="slide-image"
-              />
-              <p className="slide-description">
-                {slides[currentIndex].description}
-              </p>
-            </div>
-            <button onClick={handleNextClick}>{">"}</button>
           </div>
         )}
       </div>

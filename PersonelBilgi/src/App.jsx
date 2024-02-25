@@ -2,8 +2,9 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { PrivateRoute, PublicRoute } from "./components/Route";
 import LoginPage from "./pages/LoginPage";
-import MainPage from "./mainPage/MainPage";
-import LayoutWithNavbar from "./navbar/LayoutWithNavbar";
+import MainPage from "./pages/mainPage/MainPage";
+import PersonalDetailPage from "./pages/personalDetailPage/PersonalDetailPage";
+import LayoutWithNavbar from "./pages/navbar/LayoutWithNavbar";
 import "bulma/css/bulma.css";
 import "./index.css";
 
@@ -17,6 +18,16 @@ function App() {
             <PrivateRoute>
               <LayoutWithNavbar>
                 <MainPage />
+              </LayoutWithNavbar>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/personal-detail"
+          element={
+            <PrivateRoute>
+              <LayoutWithNavbar>
+                <PersonalDetailPage />
               </LayoutWithNavbar>
             </PrivateRoute>
           }

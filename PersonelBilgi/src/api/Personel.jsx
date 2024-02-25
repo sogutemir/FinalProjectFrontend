@@ -21,7 +21,7 @@ const getAllPersonel = async () => {
   }
 };
 
-const getPersonel = async (id) => {
+const getPersonelById = async (id) => {
   try {
     const url = `${API_BASE_URL}/personel/${id}`;
     return await axios.get(url, { headers: getHeaders() });
@@ -54,9 +54,9 @@ const getResourcePhoto = async (id) => {
   }
 };
 
-const getFilesByPersonelId = async (personelId) => {
+const getFileByPersonelId = async (personelId) => {
   try {
-    const url = `${API_BASE_URL}/file/${personelId}`;
+    const url = `${API_BASE_URL}/file/getByPersonelId/${personelId}`;
     return await axios.get(url, { headers: getHeaders() });
   } catch (error) {
     console.error("Error getting files by personnel ID:", error);
@@ -84,13 +84,22 @@ const getActivitiesByPersonelId = async (personelId) => {
   }
 };
 
-
+const getEducationByPersonelId = async (personelId) => {
+  try {
+    const url = `${API_BASE_URL}/education/getByPersonelId/${personelId}`;
+    return await axios.get(url, { headers: getHeaders() });
+  } catch (error) {
+    console.error("Error getting education by personnel ID:", error);
+    alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
+  }
+};
 
 export {
   getAllPersonel,
-  getPersonel,
+  getPersonelById,
   getResourcePhoto,
-  getFilesByPersonelId,
+  getFileByPersonelId,
   getProjectsByPersonelId,
   getActivitiesByPersonelId,
+  getEducationByPersonelId,
 };

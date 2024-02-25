@@ -1,0 +1,44 @@
+.file-container {
+  margin: 20px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.file-details-container {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.file-details-container td,
+.file-details-container th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.file-details-container tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.file-details-container tr:hover {
+  background-color: #ddd;
+}
+
+.file-info-section {
+  font-weight: bold;
+  background-color: #f9f9f9;
+}
+
+.file-info {
+  margin-bottom: 5px;
+}
+
+.file-info p {
+  margin: 0;
+  padding: 5px;
+  background-color: #e7e7e7;
+  border-radius: 2px;
+}
