@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import { getPersonelById, getResourcePhoto } from "../../api/Personel";
 import "./Personel.css";
 
+function formatDate(dateString) {
+  const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+  return new Date(dateString).toLocaleDateString('tr-TR', options);
+}
+
 function personelDetails({ personelId }) {
   const [personelPhotoUrl, setpersonelPhotoUrl] = useState("");
   const [personelDetails, setpersonelDetails] = useState(null);
@@ -63,21 +68,30 @@ function personelDetails({ personelId }) {
           )}
         </div>
         <div className="personal-info">
-          {Object.entries(personelDetails)
-            .filter(([fieldName]) => !excludedKeys.includes(fieldName)) // Filter out excluded keys
-            .map(([fieldName, value]) => (
-              <input
-                key={fieldName}
-                type="text"
-                value={value}
-                onChange={(e) => handleChange(e, fieldName)}
-                className="form-control"
-                placeholder={
-                  fieldName === "Task" ? "Çalışılan Proje" : fieldName
-                }
-              />
-            ))}
-        </div>
+  {Object.entries(personelDetails)
+    .filter(([fieldName]) => !excludedKeys.includes(fieldName)) // Filter out excluded keys
+    .map(([fieldName, value]) => {
+      // Tarih formatlaması gerektiren alanı kontrol et
+      let displayValue = value;
+      if (fieldName === "employmentStartDate" || fieldName === "dateOfBirth") { 
+        displayValue = formatDate(value); 
+      }
+
+      return (
+        <input
+          key={fieldName}
+          type="text"
+          value={displayValue}
+          onChange={(e) => handleChange(e, fieldName)}
+          className="form-control"
+          placeholder={
+            fieldName === "Task" ? "Çalışılan Proje" : fieldName
+          }
+          readOnly
+        />
+      );
+    })}
+</div>
       </div>
     </div>
   );

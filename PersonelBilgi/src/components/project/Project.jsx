@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import { getProjectByPersonelId } from "../../api/Personel";
 import "./Project.css";
 
+function formatDate(dateString) {
+  const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+  return new Date(dateString).toLocaleDateString('tr-TR', options);
+}
+
 function Project({ personelId }) {
   const [projectDetails, setProjectDetails] = useState([]);
   const [error, setError] = useState("");
@@ -51,11 +56,11 @@ function Project({ personelId }) {
             <td>{prj.projectName}</td>
             <td>{prj.teamName}</td>
             <td>{prj.projectTask}</td>
-            <td>{prj.projectStartDate}</td>
+            <td>{formatDate(prj.projectStartDate)}</td>
             <td>
               {prj.projectStatus
-                ? prj.projectFinishDate
-                  ? prj.projectFinishDate
+                ? formatDate(prj.projectFinishDate)
+                  ? formatDate(prj.projectFinishDate)
                   : "Bitiş Tarihi Girilmedi"
                 : "Devam Ediyor"}
             </td>
