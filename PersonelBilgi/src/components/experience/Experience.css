@@ -9,7 +9,7 @@
 
 @media (max-width: 768px) {
   .experience-details-container {
-    width: 100%; /* Mobil cihazlarda tam genişlik */
+    width: 100%;
     padding: 10px;
     margin: 10px auto;
   }
@@ -38,5 +38,4 @@
 }
 
 .experience-info-section {
-  /* Bu sınıfın stili zaten thead içindeki th elementleri için tanımlı, burada ekstra bir stil gerekmiyor */
 }

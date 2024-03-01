@@ -113,6 +113,25 @@ const getExperienceByPersonelId = async (personelId) => {
 
 //#region  AddMethods
 
+const addPersonel = async (personelDTO, file) => {
+  let formData = new FormData();
+  formData.append("file", file);
+  formData.append("personelDTO", JSON.stringify(personelDTO));
+
+  let config = {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  };
+
+  try {
+    const response = await axios.post("/admin/add", formData, config);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const addFile = async (file, section, personelId) => {
   try {
     const formData = new FormData();
@@ -134,7 +153,7 @@ const addActivity = async (
   description,
   eventType,
   link,
-  personelId,
+  personelId
 ) => {
   const url = `${API_BASE_URL}/activity/add`;
   const formData = new FormData();
@@ -258,6 +277,150 @@ const addEducation = async (educationData) => {
 
 //#endregion
 
+//#region  UpdateMethods
+async function updatePersonel(personelId, personelDTO, file) {
+  try {
+    const formData = new FormData();
+
+    if (file) {
+      formData.append("file", file, file.name);
+    }
+
+    Object.keys(personelDTO).forEach((key) => {
+      formData.append(key, personelDTO[key]);
+    });
+
+    const url = `${API_BASE_URL}/personel/update/${personelId}`;
+
+    const result = await axios.put(url, formData, {
+      headers: getHeaders(true),
+    });
+    return result.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+// async function updatePersonel(personelId, personel, file) {
+//   try {
+//     const formData = new FormData();
+//     if (file) {
+//       formData.append("file", file, file.name);
+//     }
+
+//     formData.append("name", personel.name);
+//     formData.append("surname", personel.surname);
+//     formData.append("identityNumber", personel.identityNumber);
+//     formData.append("academicTitle", personel.academicTitle);
+//     formData.append("email", personel.email);
+//     formData.append("dateOfBirth", personel.dateOfBirth);
+//     formData.append("bloodType", personel.bloodType);
+//     formData.append("phone", personel.phone);
+//     formData.append("vehiclePlate", personel.vehiclePlate);
+//     formData.append("emergencyContact", personel.emergencyContact);
+//     formData.append("emergencyContactPhone", personel.emergencyContactPhone);
+//     formData.append("residenceAddress", personel.residenceAddress);
+//     formData.append("employmentStartDate", personel.employmentStartDate);
+//     formData.append("registrationNumber", personel.registrationNumber);
+//     formData.append("cadre", personel.cadre);
+//     formData.append("title", personel.title);
+//     formData.append("department", personel.department);
+//     formData.append("projectInProgress", personel.projectInProgress);
+//     formData.append("task", personel.task);
+//     formData.append("teamName", personel.teamName);
+//     formData.append("personnelType", personel.personnelType);
+//     formData.append("workingType", personel.workingType);
+//     formData.append("workStatus", personel.workStatus);
+//     formData.append("inServiceUsage", personel.inServiceUsage);
+//     formData.append("internalNumber", personel.internalNumber);
+//     formData.append("roomNumber", personel.roomNumber);
+//     formData.append("isMale", personel.isMale);
+
+//     const url = `${API_BASE_URL}/personel/update/${personelId}`;
+
+//     const result = await axios.put(url, formData, {
+//       headers: getHeaders(true),
+//     });
+//     return result.data;
+//   } catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+// }
+
+//#endregion
+
+//#region  DeleteMethods
+
+async function deletePersonel(personelId) {
+  try {
+    const url = `${API_BASE_URL}/personel/admin/delete/${personelId}`;
+    const result = await axios.delete(url, { headers: getHeaders });
+    return result.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+async function deleteFile(personelId) {
+  try {
+    const url = `${API_BASE_URL}/file/delete/${personelId}`;
+    const result = await axios.delete(url, { headers: getHeaders });
+    return result.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+async function deleteProject(personelId) {
+  try {
+    const url = `${API_BASE_URL}/project/delete/${personelId}`;
+    const result = await axios.delete(url, { headers: getHeaders });
+    return result.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+async function deleteExperience(personelId) {
+  try {
+    const url = `${API_BASE_URL}/experience/delete/${personelId}`;
+    const result = await axios.delete(url, { headers: getHeaders });
+    return result.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+async function deleteEducation(personelId) {
+  try {
+    const url = `${API_BASE_URL}/education/delete/${personelId}`;
+    const result = await axios.delete(url, { headers: getHeaders });
+    return result.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+async function deleteActivity(personelId) {
+  try {
+    const url = `${API_BASE_URL}/activity/delete/${personelId}`;
+    const result = await axios.delete(url, { headers: getHeaders });
+    return result.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+//#endregion
+
 export {
   ///
   ///get methods
@@ -280,4 +443,20 @@ export {
   addProject,
   addExperience,
   addEducation,
+  addPersonel,
+
+  ///
+  ///Update Methods
+  ///
+  updatePersonel,
+
+  ///
+  ///Delete Methods
+  ///
+  deleteActivity,
+  deleteEducation,
+  deleteExperience,
+  deleteFile,
+  deletePersonel,
+  deleteProject,
 };

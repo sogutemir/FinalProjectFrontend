@@ -1,5 +1,6 @@
+// eslint-disable-next-line no-unused-vars
 import React from "react";
-import Personel from "../../components/personel/Personel";
+import PersonelInfo from "../../components/personel/PersonalInfo.jsx";
 import Education from "../../components/education/Education";
 import PersonelFile from "../../components/personelFile/PersonelFile";
 import Experience from "../../components/experience/Experience";
@@ -12,12 +13,12 @@ function PersonalDetailPage() {
 
   return (
     <>
-        <Personel personelId={id} />
-        <Project personelId={id} />
-        <Education personelId={id} />
-        <Experience personelId={id} />
-        <Activity personelId={id} />
-        <PersonelFile personelId={id} />
+      <PersonelInfo personelId={id} />
+      <Project personelId={id} />
+      <Education personelId={id} />
+      <Experience personelId={id} />
+      <Activity personelId={id} />
+      <PersonelFile personelId={id} />
     </>
   );
 }
