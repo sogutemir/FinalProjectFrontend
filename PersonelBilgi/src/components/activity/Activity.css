@@ -36,7 +36,45 @@
 .activity-details-container tbody tr:hover {
   background-color: #ddd;
 }
+.activity-container {
+  margin: 20px auto;
+  padding: 20px;
+  width: 70%;
+  border-collapse: collapse;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+}
+
+@media (max-width: 768px) {
+  .activity-container {
+    padding: 10px;
+    margin: 10px auto;
+  }
+}
+
+.activity-container th,
+.activity-container td {
+  border: 1px solid #ddd;
+  text-align: left;
+  padding: 8px;
+}
+
+.activity-container thead th {
+  font-weight: bold;
+}
+
+.activity-container tbody td {
+  background-color: #f9f9f9;
+}
+
+.activity-container tbody tr:hover {
+  background-color: #ddd;
+}
 
 .activity-info-section {
-  /* Bu sınıf için ekstra bir stil gerekmiyor çünkü thead içindeki th elementleri için zaten uygulanıyor */
+  background-color: #ff3939;
+  color: #f0f0f0;
+  font-weight: bold;
+  text-align: center;
 }
+

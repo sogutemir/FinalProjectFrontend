@@ -134,7 +134,7 @@ const addActivity = async (
   description,
   eventType,
   link,
-  personnelId
+  personelId,
 ) => {
   const url = `${API_BASE_URL}/activity/add`;
   const formData = new FormData();

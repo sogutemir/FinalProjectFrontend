@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
 import { getExperienceByPersonelId } from "../../api/Personel";
 import "./Experience.css";
@@ -7,6 +8,7 @@ function formatDate(dateString) {
   return new Date(dateString).toLocaleDateString('tr-TR', options);
 }
 
+// eslint-disable-next-line react/prop-types
 function Experience({ personelId }) {
   const [experienceDetails, setExperienceDetails] = useState([]);
   const [error, setError] = useState("");

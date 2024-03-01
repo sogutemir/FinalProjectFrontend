@@ -49,8 +49,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5); /* Yarı saydam arka plan */
-  z-index: 1000; /* Diğer elementlerin önünde */
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
 }
 
 .modal-background {
@@ -59,7 +59,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #fff; /* Modal arka planını kaplaması için */
+  background-color: #fff;
   opacity: 0.5;
 }
 
@@ -70,7 +70,7 @@
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 50%;
-  max-width: 500px; /* Modal kartının maksimum genişliği */
+  max-width: 500px;
 }
 
 .modal-card-head {
@@ -100,14 +100,14 @@
 .textarea {
   width: 100%;
   padding: 8px;
-  margin-bottom: 10px; /* Inputlar arasında boşluk */
+  margin-bottom: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
 
 .button {
   padding: 10px 15px;
-  margin-right: 10px; /* Butonlar arası boşluk */
+  margin-right: 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
