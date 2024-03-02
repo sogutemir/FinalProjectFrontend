@@ -7,6 +7,7 @@ import PersonalDetailPage from "./pages/personalDetailPage/PersonalDetailPage";
 import LayoutWithNavbar from "./pages/navbar/LayoutWithNavbar";
 import "bulma/css/bulma.css";
 import "./index.css";
+import PersonelAdd from "./components/personel/PersonelAdd.jsx";
 
 function App() {
   return (
@@ -40,6 +41,14 @@ function App() {
             </PublicRoute>
           }
         />
+          <Route path="/addperson" element={
+              <PrivateRoute>
+                  <LayoutWithNavbar>
+                      <PersonelAdd />
+                  </LayoutWithNavbar>
+              </PrivateRoute>
+          }/>
+
       </Routes>
     </Router>
   );

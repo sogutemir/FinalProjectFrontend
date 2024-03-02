@@ -42,19 +42,19 @@ function Personels() {
           setResourceUrls(urls);
           setEmployedThisMonth(
             response.data.filter((personel) =>
-              isEmployedThisMonth(personel.employmentStartDate)
+              isEmployedThisMonth(personel.startDateOfEmployment)
             )
           );
 
           const latestStartDate = Math.max(
             ...response.data.map(
-              (personel) => new Date(personel.employmentStartDate)
+              (personel) => new Date(personel.startDateOfEmployment)
             )
           );
           setLatestPersonel(
             response.data.find(
               (personel) =>
-                new Date(personel.employmentStartDate).getTime() ===
+                new Date(personel.startDateOfEmployment).getTime() ===
                 latestStartDate
             )
           );
@@ -156,7 +156,8 @@ function Personels() {
                 <p>Seninle Daha Güçlüyüz!</p>
                 <p>
                   {new Date(
-                    employedThisMonth[currentIndex].employmentStartDate
+                    employedThisMonth[currentIndex].startDateOfEmployment
+
                   ).toLocaleDateString()}
                 </p>
               </div>
@@ -173,7 +174,7 @@ function Personels() {
               <p>Nice mutlu, sağlıklı günler dileriz.</p>
               <p>
                 {new Date(
-                  latestPersonel.employmentStartDate
+                  latestPersonel.startDateOfEmployment
                 ).toLocaleDateString()}
               </p>
             </div>

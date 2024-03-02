@@ -114,22 +114,25 @@ const getExperienceByPersonelId = async (personelId) => {
 //#region  AddMethods
 
 const addPersonel = async (personelDTO, file) => {
-  let formData = new FormData();
-  formData.append("file", file);
-  formData.append("personelDTO", JSON.stringify(personelDTO));
+    try {
+      const formData = new FormData();
 
-  let config = {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  };
+      if (file) {
+        formData.append("file", file, file.name);
+      }
+      Object.keys(personelDTO).forEach((key) => {
+        formData.append(key, personelDTO[key]);
+      });
 
-  try {
-    const response = await axios.post("/admin/add", formData, config);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-  }
+      const url = `${API_BASE_URL}/personel/admin/add`;
+      const result = await axios.post(url, formData, {
+        headers: getHeaders(true),
+      });
+      return result.data;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
 };
 
 const addFile = async (file, section, personelId) => {

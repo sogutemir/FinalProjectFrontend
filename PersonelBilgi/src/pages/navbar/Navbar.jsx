@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
+import {Link} from "react-router-dom";
 
 function Navbar() {
   return (
@@ -33,6 +34,8 @@ function Navbar() {
             <a className="navbar-item">Genel</a>
 
             <a className="navbar-item">Rehber</a>
+
+            <Link to='/addperson' className='navbar-item'>Add Person</Link>
           </div>
         </div>
       </nav>
