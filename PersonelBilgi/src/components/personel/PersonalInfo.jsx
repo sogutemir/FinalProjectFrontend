@@ -45,14 +45,18 @@ function PersonalInfo(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getPersonelById(personelId);
+        const response = await getPersonelById(personelId, true);
+
+        console.log(response)
         if (response.data) {
           setPersonel(response.data);
-          const photoResponse = await getResourcePhoto(response.data.photoId);
-          if (photoResponse.status === 200) {
-            setPersonelPhotoUrl(URL.createObjectURL(photoResponse.data));
-          } else {
-            setError("Failed to load personel photo");
+          if (response.data.photoId) {
+            const photoResponse = await getResourcePhoto(response.data.photoId);
+            if (photoResponse.status === 200) {
+              setPersonelPhotoUrl(URL.createObjectURL(photoResponse.data));
+            } else {
+              setError("Failed to load personel photo");
+            }
           }
         }
       } catch (error) {

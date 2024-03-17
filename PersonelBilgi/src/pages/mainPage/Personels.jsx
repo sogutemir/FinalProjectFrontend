@@ -4,9 +4,6 @@ import { getAllPersonel, getResourcePhoto } from "../../api/Personel";
 function Personels() {
   const [personels, setPersonels] = useState([]);
   const [resourceUrls, setResourceUrls] = useState({});
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [employedThisMonth, setEmployedThisMonth] = useState([]);
-  const [latestPersonel, setLatestPersonel] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -40,24 +37,7 @@ function Personels() {
           }, {});
 
           setResourceUrls(urls);
-          setEmployedThisMonth(
-            response.data.filter((personel) =>
-              isEmployedThisMonth(personel.startDateOfEmployment)
-            )
-          );
 
-          const latestStartDate = Math.max(
-            ...response.data.map(
-              (personel) => new Date(personel.startDateOfEmployment)
-            )
-          );
-          setLatestPersonel(
-            response.data.find(
-              (personel) =>
-                new Date(personel.startDateOfEmployment).getTime() ===
-                latestStartDate
-            )
-          );
         } else {
           setError("Failed to load data from server");
         }
@@ -71,24 +51,6 @@ function Personels() {
     fetchAllPersonels();
   }, []);
 
-  const isEmployedThisMonth = (startDate) => {
-    const employmentDate = new Date(startDate);
-    const currentDate = new Date();
-    return (
-      employmentDate.getMonth() === currentDate.getMonth() &&
-      employmentDate.getFullYear() === currentDate.getFullYear()
-    );
-  };
-
-  const handlePrevClick = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex > 0 ? prevIndex - 1 : employedThisMonth.length - 1
-    );
-  };
-
-  const handleNextClick = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % employedThisMonth.length);
-  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -141,45 +103,7 @@ function Personels() {
         </tbody>
       </table>
       <div>
-        {employedThisMonth.length > 0 && (
-          <div className="cards-container">
-            <button onClick={handlePrevClick}>{"<"}</button>
-            <div className="personel-card">
-              <img
-                src={resourceUrls[employedThisMonth[currentIndex].photoId]}
-                alt="Personel"
-                className="personel-img"
-              />
-              <div className="card-text">
-                <p className="welcome-text">Hoşgeldin!</p>
-                <h3>{`${employedThisMonth[currentIndex].name} ${employedThisMonth[currentIndex].surname}`}</h3>
-                <p>Seninle Daha Güçlüyüz!</p>
-                <p>
-                  {new Date(
-                    employedThisMonth[currentIndex].startDateOfEmployment
 
-                  ).toLocaleDateString()}
-                </p>
-              </div>
-            </div>
-            <button onClick={handleNextClick}>{">"}</button>
-          </div>
-        )}
-        {latestPersonel && (
-          <div className="personel-card">
-            <div>
-              <img src={resourceUrls[latestPersonel.photoId]} alt="Personel" />
-              <h2>İyi Ki Doğdun!</h2>
-              <h3>{`${latestPersonel.name} ${latestPersonel.surname}`}</h3>
-              <p>Nice mutlu, sağlıklı günler dileriz.</p>
-              <p>
-                {new Date(
-                  latestPersonel.startDateOfEmployment
-                ).toLocaleDateString()}
-              </p>
-            </div>
-          </div>
-        )}
       </div>
     </>
   );

@@ -27,9 +27,9 @@ const getAllPersonel = async () => {
   }
 };
 
-const getPersonelById = async (id) => {
+const getPersonelById = async (id, isAll = null) => {
   try {
-    const url = `${API_BASE_URL}/personel/${id}`;
+    const url = `${API_BASE_URL}/personel/${id}${isAll !== null ? `?isAll=${isAll}` : ''}`;
     return await axios.get(url, { headers: getHeaders() });
   } catch (error) {
     console.error("Error getting personel:", error);
@@ -40,6 +40,16 @@ const getPersonelById = async (id) => {
 const getProjectByPersonelId = async (id) => {
   try {
     const url = `${API_BASE_URL}/project/getByPersonelId/${id}`;
+    return await axios.get(url, { headers: getHeaders() });
+  } catch (error) {
+    console.error("Error getting project:", error);
+    alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
+  }
+};
+
+const getPersonelCardLastMonth = async () => {
+  try {
+    const url = `${API_BASE_URL}/personel/new-personel`;
     return await axios.get(url, { headers: getHeaders() });
   } catch (error) {
     console.error("Error getting project:", error);
@@ -305,53 +315,6 @@ async function updatePersonel(personelId, personelDTO, file) {
   }
 }
 
-// async function updatePersonel(personelId, personel, file) {
-//   try {
-//     const formData = new FormData();
-//     if (file) {
-//       formData.append("file", file, file.name);
-//     }
-
-//     formData.append("name", personel.name);
-//     formData.append("surname", personel.surname);
-//     formData.append("identityNumber", personel.identityNumber);
-//     formData.append("academicTitle", personel.academicTitle);
-//     formData.append("email", personel.email);
-//     formData.append("dateOfBirth", personel.dateOfBirth);
-//     formData.append("bloodType", personel.bloodType);
-//     formData.append("phone", personel.phone);
-//     formData.append("vehiclePlate", personel.vehiclePlate);
-//     formData.append("emergencyContact", personel.emergencyContact);
-//     formData.append("emergencyContactPhone", personel.emergencyContactPhone);
-//     formData.append("residenceAddress", personel.residenceAddress);
-//     formData.append("employmentStartDate", personel.employmentStartDate);
-//     formData.append("registrationNumber", personel.registrationNumber);
-//     formData.append("cadre", personel.cadre);
-//     formData.append("title", personel.title);
-//     formData.append("department", personel.department);
-//     formData.append("projectInProgress", personel.projectInProgress);
-//     formData.append("task", personel.task);
-//     formData.append("teamName", personel.teamName);
-//     formData.append("personnelType", personel.personnelType);
-//     formData.append("workingType", personel.workingType);
-//     formData.append("workStatus", personel.workStatus);
-//     formData.append("inServiceUsage", personel.inServiceUsage);
-//     formData.append("internalNumber", personel.internalNumber);
-//     formData.append("roomNumber", personel.roomNumber);
-//     formData.append("isMale", personel.isMale);
-
-//     const url = `${API_BASE_URL}/personel/update/${personelId}`;
-
-//     const result = await axios.put(url, formData, {
-//       headers: getHeaders(true),
-//     });
-//     return result.data;
-//   } catch (error) {
-//     console.error(error);
-//     throw error;
-//   }
-// }
-
 //#endregion
 
 //#region  DeleteMethods
@@ -430,6 +393,7 @@ export {
   ///
   getAllPersonel,
   getPersonelById,
+  getPersonelCardLastMonth,
   getResourcePhoto,
   getFileByPersonelId,
   getProjectsByPersonelId,
@@ -437,6 +401,7 @@ export {
   getEducationByPersonelId,
   getProjectByPersonelId,
   getExperienceByPersonelId,
+
 
   ///
   ///add methods
