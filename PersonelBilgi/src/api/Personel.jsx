@@ -374,16 +374,16 @@ async function deleteEducation(personelId) {
   }
 }
 
-async function deleteActivity(personelId) {
+async function deleteActivity(activityId) {
   try {
-    const url = `${API_BASE_URL}/activity/delete/${personelId}`;
-    const result = await axios.delete(url, { headers: getHeaders });
-    return result.data;
+    const url = `${API_BASE_URL}/activity/delete/${activityId}`;
+    return await axios.delete(url, { headers: getHeaders() });
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
+
 
 //#endregion
 

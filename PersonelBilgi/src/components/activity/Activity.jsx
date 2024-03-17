@@ -1,8 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, {useState, useEffect} from "react";
-import {getActivityByPersonelId, addActivity} from "../../api/Personel";
+import {getActivityByPersonelId, addActivity, deleteActivity} from "../../api/Personel";
 import "./Activity.css";
-
 
 
 function NewActivity() {
@@ -39,6 +38,16 @@ async function addNewActivity(newActivity, setNewActivity, toggleModal, fetchAct
   } catch (error) {
     console.error("Error adding activity:", error);
   }
+}
+
+async function deleteActivityItem(activityId) {
+    try {
+        console.log("activityId", activityId)
+        await deleteActivity(activityId);
+        window.location.reload();
+    } catch (error) {
+        console.error("Error deleting activity:", error);
+    }
 }
 
 function Activity({personelId}) {
@@ -170,22 +179,25 @@ function Activity({personelId}) {
         <table>
           <thead>
           <tr>
-            <th>Activity Name</th>
-            <th>Description</th>
-            <th>Event Type</th>
-            <th>Link</th>
-            <th>Ek</th>
+              <th>Activity Name</th>
+              <th>Description</th>
+              <th>Event Type</th>
+              <th>Link</th>
+              <th>Ek</th>
           </tr>
           </thead>
           <tbody>
           {activityDetails.map((activity, index) => (
               <tr key={index}>
-                <td>{activity.activityName}</td>
-                <td>{activity.description}</td>
-                <td>{activity.eventType}</td>
-                {/*<td>{activity.link ? <a href={activity.link}>Open Link</a> : '--'}</td>*/}
-                <td>{activity.link ? activity.link : '--'}</td>
-                <td>{activity.fileName }</td>
+                  <td>{activity.activityName}</td>
+                  <td>{activity.description}</td>
+                  <td>{activity.eventType}</td>
+                  {/*<td>{activity.link ? <a href={activity.link}>Open Link</a> : '--'}</td>*/}
+                  <td>{activity.link ? activity.link : '--'}</td>
+                  <td>{activity.fileName}</td>
+                  <td>
+                      <button onClick={() => deleteActivityItem(activity.id)}>Delete</button>
+                  </td>
               </tr>
           ))}
           </tbody>

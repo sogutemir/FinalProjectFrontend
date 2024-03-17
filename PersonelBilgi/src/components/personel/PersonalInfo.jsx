@@ -45,7 +45,7 @@ function PersonalInfo(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getPersonelById(personelId, true);
+        const response = await getPersonelById(personelId, false);
 
         console.log(response)
         if (response.data) {
