@@ -32,9 +32,7 @@ function Navbar() {
         <div id="navbarBasicExample" className="navbar-menu">
           <div className="navbar-start">
             <a className="navbar-item">Genel</a>
-
-            <a className="navbar-item">Rehber</a>
-
+            <Link to='/contact' className='navbar-item'>Rehber</Link>
             <Link to='/addperson' className='navbar-item'>Add Person</Link>
           </div>
         </div>

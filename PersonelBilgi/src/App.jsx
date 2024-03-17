@@ -8,6 +8,7 @@ import LayoutWithNavbar from "./pages/navbar/LayoutWithNavbar";
 import "bulma/css/bulma.css";
 import "./index.css";
 import PersonelAdd from "./components/personel/PersonelAdd.jsx";
+import ContactPage from "./pages/contact/ContactPage.jsx";
 
 function App() {
   return (
@@ -45,6 +46,13 @@ function App() {
               <PrivateRoute>
                   <LayoutWithNavbar>
                       <PersonelAdd />
+                  </LayoutWithNavbar>
+              </PrivateRoute>
+          }/>
+          <Route path="/contact" element={
+              <PrivateRoute>
+                  <LayoutWithNavbar>
+                      <ContactPage />
                   </LayoutWithNavbar>
               </PrivateRoute>
           }/>

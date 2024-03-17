@@ -42,7 +42,6 @@ async function addNewActivity(newActivity, setNewActivity, toggleModal, fetchAct
 
 async function deleteActivityItem(activityId) {
     try {
-        console.log("activityId", activityId)
         await deleteActivity(activityId);
         window.location.reload();
     } catch (error) {
@@ -184,6 +183,7 @@ function Activity({personelId}) {
               <th>Event Type</th>
               <th>Link</th>
               <th>Ek</th>
+              <th></th>
           </tr>
           </thead>
           <tbody>

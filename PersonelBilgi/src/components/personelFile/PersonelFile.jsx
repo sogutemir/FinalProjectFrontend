@@ -1,12 +1,21 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
-import { getFileByPersonelId } from "../../api/Personel";
+import {deleteFile, getFileByPersonelId} from "../../api/Personel";
 import { addFile } from "../../api/Personel";
 import "./PersonelFile.css";
 
 function removePrefix(inputString) {
   const parts = inputString.split('/');
   return parts.length > 1 ? '.' + parts[1] : '.' + inputString;
+}
+
+async function deletePersonelFileItem(fileId) {
+  try {
+    await deleteFile(fileId);
+    window.location.reload();
+  } catch (error) {
+    console.error("Error deleting activity:", error);
+  }
 }
 
 function formatDate(dateString) {
@@ -70,20 +79,24 @@ function PersonalFile({ personelId }) {
       <button onClick={toggleModal}>Ekle</button>
       <table className="file-details-container">
         <thead>
-          <tr>
-            <th className="file-info-section">Dosya Türü</th>
-            <th className="file-info-section">Dosya Adı</th>
-            <th className="file-info-section">Bölüm</th>
-            <th className="file-info-section">Yüklenme Tarihi</th>
-          </tr>
+        <tr>
+          <th className="file-info-section">Dosya Türü</th>
+          <th className="file-info-section">Dosya Adı</th>
+          <th className="file-info-section">Bölüm</th>
+          <th className="file-info-section">Yüklenme Tarihi</th>
+          <th className="file-info-section"></th>
+        </tr>
         </thead>
         <tbody>
-          {fileDetails.map((detail, index) => (
+        {fileDetails.map((detail, index) => (
             <tr key={index}>
               <td>{removePrefix(detail.fileType)}</td>
               <td>{detail.fileName}</td>
               <td>{detail.section}</td>
               <td>{formatDate(detail.uploadDate)}</td>
+                <td>
+                    <button onClick={() => deletePersonelFileItem(detail.id)}>Delete</button>
+                </td>
             </tr>
           ))}
         </tbody>

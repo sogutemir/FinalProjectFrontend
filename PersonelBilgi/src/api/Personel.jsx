@@ -330,44 +330,41 @@ async function deletePersonel(personelId) {
   }
 }
 
-async function deleteFile(personelId) {
+async function deleteFile(fileId) {
   try {
-    const url = `${API_BASE_URL}/file/delete/${personelId}`;
-    const result = await axios.delete(url, { headers: getHeaders });
-    return result.data;
+    const url = `${API_BASE_URL}/file/delete/${fileId}`;
+    return await axios.delete(url, { headers: getHeaders() });
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
 
-async function deleteProject(personelId) {
+async function deleteProject(projectId) {
   try {
-    const url = `${API_BASE_URL}/project/delete/${personelId}`;
-    const result = await axios.delete(url, { headers: getHeaders });
-    return result.data;
+    const url = `${API_BASE_URL}/project/delete/${projectId}`;
+    return await axios.delete(url, { headers: getHeaders() });
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
 
-async function deleteExperience(personelId) {
+async function deleteExperience(experienceId) {
   try {
-    const url = `${API_BASE_URL}/experience/delete/${personelId}`;
-    const result = await axios.delete(url, { headers: getHeaders });
-    return result.data;
+    const url = `${API_BASE_URL}/experience/delete/${experienceId}`;
+    return await axios.delete(url, { headers: getHeaders() });
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
 
-async function deleteEducation(personelId) {
+
+async function deleteEducation(educationId) {
   try {
-    const url = `${API_BASE_URL}/education/delete/${personelId}`;
-    const result = await axios.delete(url, { headers: getHeaders });
-    return result.data;
+    const url = `${API_BASE_URL}/education/delete/${educationId}`;
+    return await axios.delete(url, { headers: getHeaders() });
   } catch (error) {
     console.error(error);
     throw error;
