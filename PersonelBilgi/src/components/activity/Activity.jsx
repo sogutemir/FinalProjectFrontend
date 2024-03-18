@@ -1,208 +1,205 @@
 // eslint-disable-next-line no-unused-vars
-import React, {useState, useEffect} from "react";
-import {getActivityByPersonelId, addActivity, deleteActivity} from "../../api/Personel";
+import React, { useState, useEffect } from "react";
+import { deleteActivity, getActivityByPersonelId, addActivity, updateActivity } from "../../api/Personel";
 import "./Activity.css";
 
-
-function NewActivity() {
-    return {activityName: "", description: "", eventType: "", link: "", file: null};
+function removePrefix(inputString) {
+  if (inputString) {
+    const parts = inputString.split("/");
+    return parts.length > 1 ? "." + parts[1] : "." + inputString;
+  }
+  return "";
 }
 
-async function fetchActivityDetails(personelId, setError, setActivityDetails) {
+async function deletePersonelActivityItem(activityId) {
   try {
-    const detailsResponse = await getActivityByPersonelId(personelId);
-    if (detailsResponse.status === 200) {
-      setActivityDetails(detailsResponse.data);
-    } else {
-      setError("Failed to load activity details");
-    }
+    await deleteActivity(activityId);
+    window.location.reload();
   } catch (error) {
-    setError("An error occurred while fetching activity details");
-    console.error("Error fetching activity details", error);
+    console.error("Error deleting activity:", error);
   }
 }
 
-async function addNewActivity(newActivity, setNewActivity, toggleModal, fetchActivityDetails) {
-  try {
-    await addActivity(
-        newActivity.file,
-        newActivity.activityName,
-        newActivity.description,
-        newActivity.eventType,
-        newActivity.link,
-        newActivity.personelId
-    );
-    setNewActivity(NewActivity());
-    toggleModal();
-    fetchActivityDetails();
-  } catch (error) {
-    console.error("Error adding activity:", error);
-  }
+function formatDate(dateString) {
+  const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+  return new Date(dateString).toLocaleDateString("tr-TR", options);
 }
 
-async function deleteActivityItem(activityId) {
-    try {
-        await deleteActivity(activityId);
-        window.location.reload();
-    } catch (error) {
-        console.error("Error deleting activity:", error);
+function Activity({ personelId }) {
+  const [activityDetails, setActivityDetails] = useState(null);
+  const [error, setError] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [activity, setActivity] = useState();
+  const [activityName, setActivityName] = useState("");
+  const [description, setDescription] = useState("");
+  const [eventType, setEventType] = useState("");
+  const [link, setLink] = useState("");
+
+  const toggleModal = () => {
+    setModalOpen(!modalOpen);
+  };
+
+  const handleUploadActivity = () => {
+    addActivity(
+      activity,
+      activityName,
+      description,
+      eventType,
+      link,
+      personelId
+    ).then(() => {
+      setActivity(null);
+      setActivityName("");
+      setDescription("");
+      setEventType("");
+      setLink("");
+      setModalOpen(false);
+    });
+  };
+
+  const handleActivityChange = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setActivity(e.target.files[0]);
     }
-}
-
-function Activity({personelId}) {
-    const [activityDetails, setActivityDetails] = useState([]);
-    const [error, setError] = useState("");
-    const [modalOpen, setModalOpen] = useState(false);
-    const [newActivity, setNewActivity] = useState({...NewActivity(), personelId: personelId});
-    const toggleModal = () => {
-        setModalOpen(!modalOpen);
-    };
-
-    const handleActivitySubmit = async () => {
-      addNewActivity(newActivity, setNewActivity, toggleModal, () => fetchActivityDetails(personelId, setError, setActivityDetails));
-    };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewActivity((prevData) => ({...prevData, [name]: value}));
   };
 
-  const handleFileChange = (e) => {
-    setNewActivity((prevData) => ({...prevData, file: e.target.files[0]}));
-  };
-
-    useEffect(() => {
-        if (personelId) {
-            fetchActivityDetails(personelId, setError, setActivityDetails);
+  useEffect(() => {
+    const fetchActivityDetails = async () => {
+      try {
+        const detailsResponse = await getActivityByPersonelId(personelId);
+        if (detailsResponse.status === 200) {
+          setActivityDetails(detailsResponse.data);
+        } else {
+          setError("Failed to load personel details");
         }
-    }, [personelId]);
+      } catch (error) {
+        setError("An error occurred while fetching personel details");
+        console.error("Error fetching personel details", error);
+      }
+    };
 
+    if (personelId) {
+      fetchActivityDetails();
+    }
+  }, [personelId]);
 
   if (error) {
     return <div>Error: {error}</div>;
   }
 
-  if (!activityDetails || activityDetails.length === 0) {
-    return <div>No activities to display. Add some!</div>;
+  if (!activityDetails) {
+    return <div>Loading...</div>;
   }
 
-
-
-
   return (
-      <div className="activity-container">
-        <button onClick={toggleModal}>Add Activity</button>
-        <table className="activity-details-container">{/* ... */}</table>
+    <div className="activity-container">
+      <button onClick={toggleModal}>Ekle</button>
+      <table className="activity-details-container">
+        <thead>
+          <tr>
+            <th className="activity-info-section">Etkinlik Türü</th>
+            <th className="activity-info-section">Etkinlik Adı</th>
+            <th className="activity-info-section">Link</th>
+            <th className="activity-info-section">Yüklenme Tarihi</th>
+            <th className="activity-info-section">Ek</th>
+            <th className="activity-info-section"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {activityDetails.map((detail, index) => (
+            <tr key={index}>
+              <td>{removePrefix(detail.eventType)}</td>
+              <td>{detail.activityName}</td>
+              <td>{detail.link}</td>
+              <td>{formatDate(detail.uploadDate)}</td>
+              <td>{detail.fileName}</td>
+              <td>
+                <button onClick={() => deletePersonelActivityItem(detail.id)}>
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div>
         {modalOpen && (
-            <div className="modal is-active">
-              <div className="modal-background"></div>
-              <div className="modal-card">
-                <header className="modal-card-head">
-                  <p className="modal-card-title">Add New Activity</p>
-                  <button
-                      className="delete"
-                      aria-label="close"
-                      onClick={toggleModal}
-                  ></button>
-                </header>
-                <section className="modal-card-body">
-                  <input
-                      className="input"
-                      type="text"
-                      placeholder="Activity Name"
-                      name="activityName"
-                      value={newActivity.activityName}
-                      onChange={handleInputChange}
-                  />
-                  <input
-                      className="input"
-                      type="text"
-                      placeholder="Description"
-                      name="description"
-                      value={newActivity.description}
-                      onChange={handleInputChange}
-                  />
-                  <input
-                      className="input"
-                      type="text"
-                      placeholder="Event Type"
-                      name="eventType"
-                      value={newActivity.eventType}
-                      onChange={handleInputChange}
-                  />
-                  <input
-                      className="input"
-                      type="text"
-                      placeholder="Link"
-                      name="link"
-                      value={newActivity.link}
-                      onChange={handleInputChange}
-                  />
-                  <div className="file">
-                    <label className="file-label">
-                      <input
+          <div className="modal is-active">
+            <div className="modal-background"></div>
+            <div className="modal-card">
+              <header className="modal-card-head">
+                <p className="modal-card-title">Modal title</p>
+                <button
+                  className="delete"
+                  aria-label="close"
+                  onClick={toggleModal}
+                ></button>
+              </header>
+              <section className="modal-card-body">
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="Activity Name"
+                  value={activityName}
+                  onChange={(e) => setActivityName(e.target.value)}
+                />
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="Description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="Event Type"
+                  value={eventType}
+                  onChange={(e) => setEventType(e.target.value)}
+                />
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="Link"
+                  value={link}
+                  onChange={(e) => setLink(e.target.value)}
+                />
+                <div>
+                  <div>
+                    <div className="file has-name">
+                      <label className="file-label">
+                        <input
                           className="file-input"
                           type="file"
-                          name="file"
-                          onChange={handleFileChange}
-                      />
-                      <span className="file-cta">
-                    <span className="file-icon">
-                      {/* Icon component or element */}
-                    </span>
-                    <span className="file-label">Choose a file…</span>
-                  </span>
-                      <span className="file-name">
-                    {newActivity.file
-                        ? newActivity.file.name
-                        : "No file chosen"}
-                  </span>
-                    </label>
+                          name="resume"
+                          onChange={handleActivityChange}
+                        />
+                        <span className="file-cta">
+                          <span className="file-icon"></span>
+                          <span className="file-label"></span>
+                        </span>
+                        <span className="file-name">Dosya Seçiniz</span>
+                      </label>
+                    </div>
                   </div>
-                </section>
-                <footer className="modal-card-foot">
-                  <button
-                      className="button is-success"
-                      onClick={handleActivitySubmit}
-                  >
-                    Submit Activity
-                  </button>
-                  <button className="button" onClick={toggleModal}>
-                    Cancel
-                  </button>
-                </footer>
-              </div>
+                </div>
+              </section>
+              <footer className="modal-card-foot">
+                <button
+                  className="button is-success"
+                  onClick={handleUploadActivity}
+                >
+                  Save changes
+                </button>
+                <button className="button" onClick={toggleModal}>
+                  Cancel
+                </button>
+              </footer>
             </div>
+          </div>
         )}
-
-        <table>
-          <thead>
-          <tr>
-              <th>Activity Name</th>
-              <th>Description</th>
-              <th>Event Type</th>
-              <th>Link</th>
-              <th>Ek</th>
-              <th></th>
-          </tr>
-          </thead>
-          <tbody>
-          {activityDetails.map((activity, index) => (
-              <tr key={index}>
-                  <td>{activity.activityName}</td>
-                  <td>{activity.description}</td>
-                  <td>{activity.eventType}</td>
-                  {/*<td>{activity.link ? <a href={activity.link}>Open Link</a> : '--'}</td>*/}
-                  <td>{activity.link ? activity.link : '--'}</td>
-                  <td>{activity.fileName}</td>
-                  <td>
-                      <button onClick={() => deleteActivityItem(activity.id)}>Delete</button>
-                  </td>
-              </tr>
-          ))}
-          </tbody>
-        </table>
       </div>
+    </div>
   );
 }
 

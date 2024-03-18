@@ -80,15 +80,6 @@ const getFileByPersonelId = async (personelId) => {
   }
 };
 
-const getProjectsByPersonelId = async (personelId) => {
-  try {
-    const url = `${API_BASE_URL}/project/${personelId}`;
-    return await axios.get(url, { headers: getHeaders() });
-  } catch (error) {
-    console.error("Error getting projects by personel ID:", error);
-    alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
-  }
-};
 
 const getActivityByPersonelId = async (personelId) => {
   try {
@@ -184,7 +175,6 @@ const addActivity = async (
     });
 
     if (response.status === 200) {
-      console.log("File uploaded successfully");
       return response.data;
     } else {
       console.error("Failed to upload file");
@@ -315,6 +305,39 @@ async function updatePersonel(personelId, personelDTO, file) {
   }
 }
 
+
+async function updateActivity(activityId, activityDTO, file) {
+  try {
+    const formData = new FormData();
+
+
+    if (file instanceof Blob || file instanceof File) {
+      formData.append("file", file, file.name);
+    } else {
+      console.error("Invalid file Type: ", typeof file)
+      return;
+    }
+
+    if (file) {
+      formData.append("file", file, file.name);
+    }
+
+    Object.keys(activityDTO).forEach((key) => {
+      formData.append(key, activityDTO[key]);
+    });
+
+    const url = `${API_BASE_URL}/activity/updateNew/${activityId}`;
+
+    const result = await axios.put(url, formData, {
+      headers: getHeaders(true),
+    });
+    return result.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 //#endregion
 
 //#region  DeleteMethods
@@ -393,7 +416,6 @@ export {
   getPersonelCardLastMonth,
   getResourcePhoto,
   getFileByPersonelId,
-  getProjectsByPersonelId,
   getActivityByPersonelId,
   getEducationByPersonelId,
   getProjectByPersonelId,
@@ -414,7 +436,7 @@ export {
   ///Update Methods
   ///
   updatePersonel,
-
+  updateActivity,
   ///
   ///Delete Methods
   ///
