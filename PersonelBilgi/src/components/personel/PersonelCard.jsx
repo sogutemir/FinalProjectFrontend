@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
 import { getPersonelCardLastMonth, getResourcePhoto } from "../../api/Personel.jsx";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -56,7 +57,6 @@ const EmployeeCard = ({ employee, handleImageError, isLast }) => (
 const fetchAndUpdateEmployees = async (setEmployees) => {
     try {
         const response = await getPersonelCardLastMonth();
-        console.log(response);
         if (!response.data?.length) throw new Error();
         let updatedEmployees = await Promise.all(
             response.data.map(async employee => ({

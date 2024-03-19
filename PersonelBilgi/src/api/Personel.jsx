@@ -3,6 +3,28 @@ import Cookies from "js-cookie";
 
 const API_BASE_URL = "http://localhost:8080";
 
+const checkResponseStatusCode = (status) => {
+  if (status === 403) {
+    Cookies.remove("user_token");
+    alert("Bu işlemi yapabilmek için giriş yapmalısınız");
+    window.location.href = `http://localhost:5173/login`;
+    return false;
+  }
+  return true;
+};
+
+const apiCall = async (url, config, errorHandler) => {
+  try {
+    return await axios.get(url, config);
+  } catch (error) {
+    if (!checkResponseStatusCode(error.response.status)) {
+      return;
+    }
+    console.error(errorHandler, error);
+    alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
+  }
+};
+
 const getHeaders = (isMultipart = false) => {
   const token = Cookies.get("user_token");
   if (isMultipart) {
@@ -18,122 +40,96 @@ const getHeaders = (isMultipart = false) => {
 
 //#region GetMethods
 const getAllPersonel = async () => {
-  try {
-    const url = `${API_BASE_URL}/personel/all`;
-    return await axios.get(url, { headers: getHeaders() });
-  } catch (error) {
-    console.error("Error getting all personel:", error);
-    alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
-  }
+  const url = `${API_BASE_URL}/personel/all`;
+  return apiCall(url, { headers: getHeaders() }, "Error getting all personel:");
 };
 
 const getPersonelById = async (id, isAll = null) => {
-  try {
-    const url = `${API_BASE_URL}/personel/${id}${isAll !== null ? `?isAll=${isAll}` : ''}`;
-    return await axios.get(url, { headers: getHeaders() });
-  } catch (error) {
-    console.error("Error getting personel:", error);
-    alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
-  }
+  const url = `${API_BASE_URL}/personel/${id}${
+    isAll !== null ? `?isAll=${isAll}` : ""
+  }`;
+  return apiCall(url, { headers: getHeaders() }, "Error getting personel:");
 };
 
 const getProjectByPersonelId = async (id) => {
-  try {
-    const url = `${API_BASE_URL}/project/getByPersonelId/${id}`;
-    return await axios.get(url, { headers: getHeaders() });
-  } catch (error) {
-    console.error("Error getting project:", error);
-    alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
-  }
+  const url = `${API_BASE_URL}/project/getByPersonelId/${id}`;
+  return apiCall(url, { headers: getHeaders() }, "Error getting project:");
 };
 
 const getPersonelCardLastMonth = async () => {
-  try {
-    const url = `${API_BASE_URL}/personel/new-personel`;
-    return await axios.get(url, { headers: getHeaders() });
-  } catch (error) {
-    console.error("Error getting project:", error);
-    alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
-  }
+  const url = `${API_BASE_URL}/personel/new-personel`;
+  return apiCall(url, { headers: getHeaders() }, "Error getting new personel:");
 };
 
 const getResourcePhoto = async (id) => {
-  try {
-    const url = `${API_BASE_URL}/resourceFile/image/${id}`;
-    return await axios.get(url, {
-      headers: getHeaders(),
-      responseType: "blob",
-    });
-  } catch (error) {
-    console.error("Error getting photo:", error);
-    alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
-  }
+  const url = `${API_BASE_URL}/resourceFile/image/${id}`;
+  return apiCall(
+    url,
+    { headers: getHeaders(), responseType: "blob" },
+    "Error getting photo:"
+  );
 };
 
 const getFileByPersonelId = async (personelId) => {
-  try {
-    const url = `${API_BASE_URL}/file/getByPersonelId/${personelId}`;
-    return await axios.get(url, { headers: getHeaders() });
-  } catch (error) {
-    console.error("Error getting files by personel ID:", error);
-    alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
-  }
+  const url = `${API_BASE_URL}/file/getByPersonelId/${personelId}`;
+  return apiCall(
+    url,
+    { headers: getHeaders() },
+    "Error getting files by personel ID:"
+  );
 };
 
-
 const getActivityByPersonelId = async (personelId) => {
-  try {
-    const url = `${API_BASE_URL}/activity/getByPersonelId/${personelId}`;
-    return await axios.get(url, { headers: getHeaders() });
-  } catch (error) {
-    console.error("Error getting activities by personel ID:", error);
-    alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
-  }
+  const url = `${API_BASE_URL}/activity/getByPersonelId/${personelId}`;
+  return apiCall(
+    url,
+    { headers: getHeaders() },
+    "Error getting activities by personel ID:"
+  );
 };
 
 const getEducationByPersonelId = async (personelId) => {
-  try {
-    const url = `${API_BASE_URL}/education/getByPersonelId/${personelId}`;
-    return await axios.get(url, { headers: getHeaders() });
-  } catch (error) {
-    console.error("Error getting education by personel ID:", error);
-    alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
-  }
+  const url = `${API_BASE_URL}/education/getByPersonelId/${personelId}`;
+  return apiCall(
+    url,
+    { headers: getHeaders() },
+    "Error getting education by personel ID:"
+  );
 };
 
 const getExperienceByPersonelId = async (personelId) => {
-  try {
-    const url = `${API_BASE_URL}/experience/getByPersonelId/${personelId}`;
-    return await axios.get(url, { headers: getHeaders() });
-  } catch (error) {
-    console.error("Error getting education by personel ID:", error);
-    alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
-  }
+  const url = `${API_BASE_URL}/experience/getByPersonelId/${personelId}`;
+  return apiCall(
+    url,
+    { headers: getHeaders() },
+    "Error getting experiences by personel ID"
+  );
 };
 //#endregion
 
 //#region  AddMethods
 
 const addPersonel = async (personelDTO, file) => {
-    try {
-      const formData = new FormData();
+  try {
+    const formData = new FormData();
 
-      if (file) {
-        formData.append("file", file, file.name);
-      }
-      Object.keys(personelDTO).forEach((key) => {
-        formData.append(key, personelDTO[key]);
-      });
-
-      const url = `${API_BASE_URL}/personel/admin/add`;
-      const result = await axios.post(url, formData, {
-        headers: getHeaders(true),
-      });
-      return result.data;
-    } catch (error) {
-      console.error(error);
-      throw error;
+    if (file) {
+      formData.append("file", file, file.name);
     }
+    Object.keys(personelDTO).forEach((key) => {
+      formData.append(key, personelDTO[key]);
+    });
+
+    const url = `${API_BASE_URL}/personel/admin/add`;
+    const result = await axios.post(url, formData, {
+      headers: getHeaders(true),
+    });
+    return result.data;
+  } catch (error) {
+    checkResponseStatusCode(error.response.status);
+    console.error(error);
+    throw error;
+  }
 };
 
 const addFile = async (file, section, personelId) => {
@@ -146,6 +142,7 @@ const addFile = async (file, section, personelId) => {
     const url = `${API_BASE_URL}/file/add`;
     return await axios.post(url, formData, { headers: getHeaders(true) });
   } catch (error) {
+    checkResponseStatusCode(error.response.status);
     console.error("Error uploading file:", error);
     alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
   }
@@ -181,6 +178,7 @@ const addActivity = async (
       return null;
     }
   } catch (error) {
+    checkResponseStatusCode(error.response.status);
     console.error("Error uploading file:", error);
     alert("Bir hata oluştu. Lütfen daha sonra tekrar deneyin");
     return null;
@@ -207,6 +205,7 @@ const addProject = async (projectData) => {
     });
     return response.data;
   } catch (error) {
+    checkResponseStatusCode(error.response.status);
     console.error(
       "Error adding project:",
       error.response ? error.response.data : error.message
@@ -239,6 +238,7 @@ const addExperience = async (experienceData) => {
     );
     return response.data;
   } catch (error) {
+    checkResponseStatusCode(error.response.status);
     console.error(
       "Error adding experience:",
       error.response ? error.response.data : error.message
@@ -270,6 +270,7 @@ const addEducation = async (educationData) => {
     );
     return response.data;
   } catch (error) {
+    checkResponseStatusCode(error.response.status);
     console.error(
       "Error adding education:",
       error.response ? error.response.data : error.message
@@ -300,20 +301,19 @@ async function updatePersonel(personelId, personelDTO, file) {
     });
     return result.data;
   } catch (error) {
+    checkResponseStatusCode(error.response.status);
     console.error(error);
     throw error;
   }
 }
 
-
 async function updateActivity(activityId, activityDTO, file) {
   try {
     const formData = new FormData();
 
-    if(file){
+    if (file) {
       console.log(file);
-    }
-    else {
+    } else {
       console.log("file is null");
     }
 
@@ -332,18 +332,18 @@ async function updateActivity(activityId, activityDTO, file) {
     });
     return result.data;
   } catch (error) {
+    checkResponseStatusCode(error.response.status);
     console.error(error);
     throw error;
   }
 }
-
 
 async function updateNewFile(fileId, fileDTO, file) {
   try {
     const formData = new FormData();
 
     if (file) {
-      formData.append('file', file, file.name);
+      formData.append("file", file, file.name);
     }
 
     Object.keys(fileDTO).forEach((key) => {
@@ -358,6 +358,7 @@ async function updateNewFile(fileId, fileDTO, file) {
 
     return result.data;
   } catch (error) {
+    checkResponseStatusCode(error.response.status);
     console.error(error);
     throw error;
   }
@@ -379,6 +380,7 @@ async function updateEducation(educationId, educationDTO) {
 
     return result.data;
   } catch (error) {
+    checkResponseStatusCode(error.response.status);
     console.error(error);
     throw error;
   }
@@ -400,6 +402,7 @@ async function updateProject(projectId, projectDTO) {
 
     return result.data;
   } catch (error) {
+    checkResponseStatusCode(error.response.status);
     console.error(error);
     throw error;
   }
@@ -421,6 +424,7 @@ async function updateExperience(experienceId, experienceDTO) {
 
     return result.data;
   } catch (error) {
+    checkResponseStatusCode(error.response.status);
     console.error(error);
     throw error;
   }
@@ -436,6 +440,7 @@ async function deletePersonel(personelId) {
     const result = await axios.delete(url, { headers: getHeaders });
     return result.data;
   } catch (error) {
+    checkResponseStatusCode(error.response.status);
     console.error(error);
     throw error;
   }
@@ -446,6 +451,7 @@ async function deleteFile(fileId) {
     const url = `${API_BASE_URL}/file/delete/${fileId}`;
     return await axios.delete(url, { headers: getHeaders() });
   } catch (error) {
+    checkResponseStatusCode(error.response.status);
     console.error(error);
     throw error;
   }
@@ -456,6 +462,7 @@ async function deleteProject(projectId) {
     const url = `${API_BASE_URL}/project/delete/${projectId}`;
     return await axios.delete(url, { headers: getHeaders() });
   } catch (error) {
+    checkResponseStatusCode(error.response.status);
     console.error(error);
     throw error;
   }
@@ -466,17 +473,18 @@ async function deleteExperience(experienceId) {
     const url = `${API_BASE_URL}/experience/delete/${experienceId}`;
     return await axios.delete(url, { headers: getHeaders() });
   } catch (error) {
+    checkResponseStatusCode(error.response.status);
     console.error(error);
     throw error;
   }
 }
-
 
 async function deleteEducation(educationId) {
   try {
     const url = `${API_BASE_URL}/education/delete/${educationId}`;
     return await axios.delete(url, { headers: getHeaders() });
   } catch (error) {
+    checkResponseStatusCode(error.response.status);
     console.error(error);
     throw error;
   }
@@ -487,11 +495,11 @@ async function deleteActivity(activityId) {
     const url = `${API_BASE_URL}/activity/delete/${activityId}`;
     return await axios.delete(url, { headers: getHeaders() });
   } catch (error) {
+    checkResponseStatusCode(error.response.status);
     console.error(error);
     throw error;
   }
 }
-
 
 //#endregion
 
@@ -508,7 +516,6 @@ export {
   getEducationByPersonelId,
   getProjectByPersonelId,
   getExperienceByPersonelId,
-
 
   ///
   ///add methods
@@ -528,6 +535,7 @@ export {
   updateNewFile,
   updateEducation,
   updateProject,
+  updateExperience,
   ///
   ///Delete Methods
   ///
@@ -537,4 +545,6 @@ export {
   deleteFile,
   deletePersonel,
   deleteProject,
+  apiCall,
+  checkResponseStatusCode,
 };

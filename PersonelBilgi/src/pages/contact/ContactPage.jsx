@@ -6,7 +6,9 @@ function ContactPage() {
 
     return (
         <>
-            <Personels />
+            <Personels
+                isContactPage={true}
+            />
         </>
     );
 }

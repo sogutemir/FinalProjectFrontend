@@ -6,9 +6,11 @@ import PersonelCard from "../../components/personel/PersonelCard.jsx";
 function MainPage() {
   return (
     <>
-        <Personels />
-        <Slide />
-        <PersonelCard />
+      <Personels 
+        isContactPage={false}
+      />
+      <Slide />
+      <PersonelCard />
     </>
   );
 }
