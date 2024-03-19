@@ -5,8 +5,11 @@ import { addFile } from "../../api/Personel";
 import "./PersonelFile.css";
 
 function removePrefix(inputString) {
-  const parts = inputString.split('/');
-  return parts.length > 1 ? '.' + parts[1] : '.' + inputString;
+  if (inputString) {
+    const parts = inputString.split('/');
+    return parts.length > 1 ? '.' + parts[1] : '.' + inputString;
+  }
+  return inputString;
 }
 
 async function deletePersonelFileItem(fileId) {
@@ -24,7 +27,7 @@ function formatDate(dateString) {
 }
 
 function PersonalFile({ personelId }) {
-  const [fileDetails, setFileDetails] = useState(null);
+  const [fileDetails, setFileDetails] = useState('');
   const [error, setError] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [section, setSection] = useState('');

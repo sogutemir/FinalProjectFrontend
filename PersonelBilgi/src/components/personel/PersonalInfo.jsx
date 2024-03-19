@@ -1,9 +1,11 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
 import {
   getPersonelById,
   getResourcePhoto,
   updatePersonel,
 } from "../../api/Personel";
+import "./Personel.css";
 
 function PersonalInfo(props) {
   const { personelId } = props;
@@ -47,7 +49,6 @@ function PersonalInfo(props) {
       try {
         const response = await getPersonelById(personelId, false);
 
-        console.log(response)
         if (response.data) {
           setPersonel(response.data);
           if (response.data.photoId) {
@@ -97,9 +98,9 @@ function PersonalInfo(props) {
   };
   return (
     <>
-      <button onClick={handleUpdate}>Kaydet</button>
-      <div>
-        <div>
+      <div className="personel-info-container">
+      <div className="personalInfo-personel-container">
+        <div className="personalInfo-photo-section">
           <h2>Kişisel</h2>
           {personelPhotoUrl ? (
             <>
@@ -114,7 +115,7 @@ function PersonalInfo(props) {
             <div>Loading photo...</div>
           )}
         </div>
-        <div>
+        <div className="personalInfo-name-section">
           <label htmlFor="name">Ad</label>
           <input
             type="text"
@@ -140,7 +141,7 @@ function PersonalInfo(props) {
             id="surname"
           />
         </div>
-        <div>
+        <div className="personalInfo-TCID-section">
           <label htmlFor="idnum">T.C. Kimlik Numarası</label>
           <input
             type="text"
@@ -166,7 +167,7 @@ function PersonalInfo(props) {
             id="gender"
           />
         </div>
-        <div>
+        <div className="personalInfo-academic-title-section">
           <label htmlFor="academic-title">Akademik Unvan</label>
           <input
             type="text"
@@ -192,7 +193,7 @@ function PersonalInfo(props) {
             id="email"
           />
         </div>
-        <div>
+        <div className="personalInfo-birthdate-section">
           <label htmlFor="birthdate">Doğum Tarihi</label>
           <input
             type="date"
@@ -218,7 +219,7 @@ function PersonalInfo(props) {
             id="blood-type"
           />
         </div>
-        <div>
+        <div className="personalInfo-telephone-section">
           <label htmlFor="phone">Telefon</label>
           <input
             type="text"
@@ -244,7 +245,7 @@ function PersonalInfo(props) {
             id="vehicle-plate"
           />
         </div>
-        <div>
+        <div className="personelInfo-emergency-contact-section">
           <label htmlFor="emergency-contact">
             Acil Durumda Ulaşılacak Kişi
           </label>
@@ -274,7 +275,7 @@ function PersonalInfo(props) {
             id="emergency-phone"
           />
         </div>
-        <div>
+        <div className="personelInfo-address-section">
           <label htmlFor="residance-address">İkametgah Adresi</label>
           <input
             type="text"
@@ -289,11 +290,11 @@ function PersonalInfo(props) {
           />
         </div>
       </div>
-      <div>
-        <div>
+      <div className="personalInfo-corporation-container">
+        <div className="personalInfo-corporation-header">
           <h2>Kurumsal</h2>
         </div>
-        <div>
+        <div className="personalInfo-job-entrance-section">
           <label htmlFor="job-entreance">İşe Giriş Tarihi</label>
           <input
             type="date"
@@ -319,7 +320,7 @@ function PersonalInfo(props) {
             id="registration-num"
           />
         </div>
-        <div>
+        <div className="personalInfo-cadre-section">
           <label htmlFor="cadre">Kadro</label>
           <input
             type="text"
@@ -345,7 +346,7 @@ function PersonalInfo(props) {
             id="title"
           />
         </div>
-        <div>
+        <div className="personalInfo-department-container">
           <label htmlFor="department">Birim</label>
           <input
             type="text"
@@ -371,7 +372,7 @@ function PersonalInfo(props) {
             id="project-in-progress"
           />
         </div>
-        <div>
+        <div className="personalInfo-task-section">
           <label htmlFor="task">Görevi</label>
           <input
             type="text"
@@ -397,7 +398,7 @@ function PersonalInfo(props) {
             id="team-name"
           />
         </div>
-        <div>
+        <div className="personalInfo-personel-type-section">
           <label htmlFor="personnel-type">Personel Türü</label>
           <input
             type="text"
@@ -423,7 +424,7 @@ function PersonalInfo(props) {
             id="working-type"
           />
         </div>
-        <div>
+        <div className="personalInfo-work-status-section">
           <label htmlFor="work-status">Çalışma Durumu</label>
           <input
             type="text"
@@ -449,7 +450,7 @@ function PersonalInfo(props) {
             id="in-service-usage"
           />
         </div>
-        <div>
+        <div className="personalInfo-number-section">
           <label htmlFor="internal-number">Dahili Numara</label>
           <input
             type="text"
@@ -475,6 +476,8 @@ function PersonalInfo(props) {
             id="room-number"
           />
         </div>
+      </div>
+      <button className="personalInfo-save-button" onClick={handleUpdate}>Kaydet</button>
       </div>
     </>
   );

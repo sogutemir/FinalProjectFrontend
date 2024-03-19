@@ -310,12 +310,11 @@ async function updateActivity(activityId, activityDTO, file) {
   try {
     const formData = new FormData();
 
-
-    if (file instanceof Blob || file instanceof File) {
-      formData.append("file", file, file.name);
-    } else {
-      console.error("Invalid file Type: ", typeof file)
-      return;
+    if(file){
+      console.log(file);
+    }
+    else {
+      console.log("file is null");
     }
 
     if (file) {
@@ -331,6 +330,95 @@ async function updateActivity(activityId, activityDTO, file) {
     const result = await axios.put(url, formData, {
       headers: getHeaders(true),
     });
+    return result.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+
+async function updateNewFile(fileId, fileDTO, file) {
+  try {
+    const formData = new FormData();
+
+    if (file) {
+      formData.append('file', file, file.name);
+    }
+
+    Object.keys(fileDTO).forEach((key) => {
+      formData.append(key, fileDTO[key]);
+    });
+
+    const url = `${API_BASE_URL}/file/updateNew/${fileId}`;
+
+    const result = await axios.post(url, formData, {
+      headers: getHeaders(true),
+    });
+
+    return result.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+async function updateEducation(educationId, educationDTO) {
+  try {
+    const formData = new FormData();
+
+    Object.keys(educationDTO).forEach((key) => {
+      formData.append(key, educationDTO[key]);
+    });
+
+    const url = `${API_BASE_URL}/education/update/${educationId}`;
+
+    const result = await axios.put(url, formData, {
+      headers: getHeaders(true),
+    });
+
+    return result.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+async function updateProject(projectId, projectDTO) {
+  try {
+    const formData = new FormData();
+
+    Object.keys(projectDTO).forEach((key) => {
+      formData.append(key, projectDTO[key]);
+    });
+
+    const url = `${API_BASE_URL}/project/update/${projectId}`;
+
+    const result = await axios.put(url, formData, {
+      headers: getHeaders(true),
+    });
+
+    return result.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+async function updateExperience(experienceId, experienceDTO) {
+  try {
+    const formData = new FormData();
+
+    Object.keys(experienceDTO).forEach((key) => {
+      formData.append(key, experienceDTO[key]);
+    });
+
+    const url = `${API_BASE_URL}/experience/update/${experienceId}`;
+
+    const result = await axios.put(url, formData, {
+      headers: getHeaders(true),
+    });
+
     return result.data;
   } catch (error) {
     console.error(error);
@@ -437,6 +525,9 @@ export {
   ///
   updatePersonel,
   updateActivity,
+  updateNewFile,
+  updateEducation,
+  updateProject,
   ///
   ///Delete Methods
   ///

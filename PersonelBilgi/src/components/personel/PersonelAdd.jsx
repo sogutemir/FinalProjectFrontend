@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, {useState} from 'react';
 import {addPersonel} from "../../api/Personel.jsx";
-
+import "./Personel.css";
 const PersonelAdd = () => {
 
     const [personelData, setPersonelData] = useState({
