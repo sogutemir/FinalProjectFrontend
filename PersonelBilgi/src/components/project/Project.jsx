@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
-import {deleteProject, getProjectByPersonelId} from "../../api/Personel";
+import {addProject, deleteProject, getProjectByPersonelId} from "../../api/Personel";
 import "./Project.css";
 
 function formatDate(dateString) {
@@ -21,6 +21,47 @@ async function deleteProjectItem(projectId) {
 function Project({ personelId }) {
   const [projectDetails, setProjectDetails] = useState([]);
   const [error, setError] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const [projectData, setProjectData] = useState({
+    projectName: "",
+    teamName: "",
+    projectTask: "",
+    projectStartDate: "",
+    projectFinishDate: "",
+    projectStatus: "",
+    personelId: personelId,
+  });
+
+  const toggleModal = () => {
+    setModalOpen(!modalOpen);
+  };
+
+  const handleProjectionSubmit = async () => {
+    try {
+      await addProject(projectData);
+      setProjectData({
+        ...projectData,
+        projectName: "",
+        teamName: "",
+        projectTask: "",
+        projectStartDate: "",
+        projectFinishDate: "",
+        projectStatus: "",
+      });
+      toggleModal();
+    } catch (error) {
+      console.error("Error adding project:", error);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setProjectData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   useEffect(() => {
     const fetchProjectDetails = async () => {
@@ -51,38 +92,125 @@ function Project({ personelId }) {
   }
 
   return (
-    <table className="project-details-container">
-      <thead>
-      <tr>
-        <th className="project-info-section">Proje Adı</th>
-        <th className="project-info-section">Takım</th>
-        <th className="project-info-section">Görevi</th>
-        <th className="project-info-section">Başlangıç Tarihi</th>
-        <th className="project-info-section">Bitiş Tarihi</th>
-        <th className="project-info-section"></th>
-      </tr>
-      </thead>
-      <tbody>
-      {projectDetails.map((prj, index) => (
-            <tr key={index}>
-              <td>{prj.projectName}</td>
-              <td>{prj.teamName}</td>
-              <td>{prj.projectTask}</td>
-              <td>{formatDate(prj.projectStartDate)}</td>
-              <td>
-                {prj.projectStatus
-                    ? formatDate(prj.projectFinishDate)
-                        ? formatDate(prj.projectFinishDate)
-                        : "Bitiş Tarihi Girilmedi"
-                    : "Devam Ediyor"}
-              </td>
-              <td>
-                <button onClick={() => deleteProjectItem(prj.id)}>Delete</button>
-              </td>
-            </tr>
-        ))}
-      </tbody>
-    </table>
+
+      <div>
+        <div style={{position: 'relative'}}>
+          <button style={{position: 'unset', top: 0, right: 0}} onClick={toggleModal}>Proje Ekle</button>
+        </div>
+        <table className="project-details-container">
+          <thead>
+          <tr>
+            <th className="project-info-section">Proje Adı</th>
+            <th className="project-info-section">Takım</th>
+            <th className="project-info-section">Görevi</th>
+            <th className="project-info-section">Başlangıç Tarihi</th>
+            <th className="project-info-section">Bitiş Tarihi</th>
+            <th className="project-info-section"></th>
+          </tr>
+          </thead>
+          <tbody>
+          {projectDetails.map((prj, index) => (
+              <tr key={index}>
+                <td>{prj.projectName}</td>
+                <td>{prj.teamName}</td>
+                <td>{prj.projectTask}</td>
+                <td>{formatDate(prj.projectStartDate)}</td>
+                <td>
+                  {prj.projectStatus
+                      ? formatDate(prj.projectFinishDate)
+                          ? formatDate(prj.projectFinishDate)
+                          : "Bitiş Tarihi Girilmedi"
+                      : "Devam Ediyor"}
+                </td>
+                <td>
+                  <button onClick={() => deleteProjectItem(prj.id)}>Delete</button>
+                </td>
+              </tr>
+          ))}
+          </tbody>
+        </table>
+
+        <div>
+          {modalOpen && (
+              <div className="modal is-active">
+                <div className="modal-background"></div>
+                <div className="modal-card">
+                  <header className="modal-card-head">
+                    <p className="modal-card-title">Proje Ekle</p>
+                    <button
+                        className="delete"
+                        aria-label="close"
+                        onClick={toggleModal}
+                    ></button>
+                  </header>
+                  <section className="modal-card-body">
+                    <input
+                        className="input"
+                        type="text"
+                        placeholder="Proje Adı"
+                        name="projectName"
+                        value={projectData.projectName}
+                        onChange={handleInputChange}
+                    />
+                    <input
+                        className="input"
+                        type="text"
+                        placeholder="Takım Adı"
+                        name="teamName"
+                        value={projectData.teamName}
+                        onChange={handleInputChange}
+                    />
+                    <input
+                        className="input"
+                        type="text"
+                        placeholder="Görevi"
+                        name="projectTask"
+                        value={projectData.projectTask}
+                        onChange={handleInputChange}
+                    />
+                    <input
+                        className="input"
+                        type="date"
+                        name="projectStartDate"
+                        value={projectData.projectStartDate}
+                        onChange={handleInputChange}
+                    />
+                    {projectData.projectStatus === 'true' && (
+                        <input
+                            className="input"
+                            type="date"
+                            name="projectFinishDate"
+                            value={projectData.projectFinishDate}
+                            onChange={handleInputChange}
+                        />
+                    )}
+                    <select
+                        className="input"
+                        name="projectStatus"
+                        value={projectData.projectStatus}
+                        onChange={handleInputChange}
+                    >
+                      <option value="false">Devam Ediyor</option>
+                      <option value="true">Bitti</option>
+                    </select>
+
+                  </section>
+                  <footer className="modal-card-foot">
+                    <button
+                        className="button is-success"
+                        onClick={handleProjectionSubmit}
+                    >
+                      Submit
+                    </button>
+                    <button className="button" onClick={toggleModal}>
+                      Cancel
+                    </button>
+                  </footer>
+                </div>
+              </div>
+          )}
+        </div>
+      </div>
   );
 }
 

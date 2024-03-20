@@ -60,70 +60,94 @@
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 20px;
+  font-family: 'Roboto', sans-serif;
+  color: #4A4A4A;
 }
 
 .personalInfo-field-group {
   display: flex;
   flex-direction: column;
-  width: calc(50% - 20px); /* Adjusts for margin */
-  margin-right: 20px; /* Adds some space between the groups */
+  width: calc(50% - 20px);
+  margin-right: 20px;
+  box-shadow: 0 4px 12px 0 rgba(0,0,0,0.05);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.personalInfo-field-group:hover {
+  box-shadow: 0 16px 24px 2px rgba(0,0,0,0.14),0 6px 30px 5px rgba(0,0,0,0.12),0 8px 10px -5px rgba(0,0,0,0.2);
 }
 
 .personalInfo-field-group:last-child {
-  margin-right: 0; /* Removes margin from the last group to avoid unnecessary spacing */
+  margin-right: 0;
 }
 
 .personalInfo-section label {
-  font-size: 16px; /* Example font size, adjust as needed */
-  color: #333; /* Subtle text color */
-  margin-bottom: 5px; /* Space between label and input */
+  font-size: 16px;
+  color: #9E9E9E;
+  margin-bottom: 5px;
 }
 
 .personalInfo-section input[type="text"],
 .personalInfo-section input[type="email"],
 .personalInfo-section input[type="date"],
 .personalInfo-section input[type="file"] {
-  width: 100%; /* Ensures input width matches the parent */
+  width: 100%;
   padding: 8px;
-  margin-bottom: 10px; /* Space below each input */
-  border: 1px solid #ddd;
-  border-radius: 4px; /* Rounded corners for inputs */
+  margin-bottom: 10px;
+  border: 1px solid #E0E0E0;
+  border-radius: 4px;
+  transition: border 0.3s;
+}
+
+.personalInfo-section input[type="text"]:focus,
+.personalInfo-section input[type="email"]:focus,
+.personalInfo-section input[type="date"]:focus,
+.personalInfo-section input[type="file"]:focus {
+  border: 1px solid #9E9E9E;
 }
 
 @media (max-width: 768px) {
   .personalInfo-field-group {
-    width: 100%; /* Each group takes full width on smaller screens */
-    margin-right: 0; /* Removes right margin for mobile layout */
+    width: 100%;
+    margin-right: 0;
   }
 }
 
 .personalInfo-save-button {
-  background-color: #4caf50; /* Button color */
-  color: #ffffff;
+  background-color: #8BC34A;
+  color: #FFFFFF;
   padding: 10px 20px;
   border: none;
   cursor: pointer;
-  display: block; /* Ensures the button is a block-level element */
-  width: auto; /* Button width is content-based */
-  margin: 20px auto; /* Centers the button and adds space above and below */
+  display: block;
+  width: auto;
+  margin: 20px auto;
+  transition: background-color 0.3s;
+}
+.personalInfo-save-button:hover {
+  background-color: #7CB342;
 }
 
-.personalInfo-personel-container, .personalInfo-corporation-container {
+
+.personalInfo-personel-container,
+.personalInfo-corporation-container {
   margin: 20px auto;
   padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.05);
+  background-color: #FAFAFA;
   width: 70%;
-  overflow-x: auto; /* Allows scrolling for overflow */
+  overflow-x: auto;
 }
+
 
 .personalInfo-corporation-header h2, .personalInfo-photo-section h2 {
   text-align: center;
-  margin-bottom: 20px; /* Spacing below headers */
+  color: #4A4A4A;
+  margin-bottom: 20px;
 }
 
 .personel-info-container {
-  display: grid; 
+  display: grid;
   grid-template-columns: 1fr 1fr;
 }
 
