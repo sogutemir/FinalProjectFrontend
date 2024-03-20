@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
-import {getEducationByPersonelId, addEducation, deleteEducation} from "../../api/Personel";
+import {getEducationByPersonelId, addEducation, deleteEducation, updateEducation} from "../../api/Personel";
 import "./Education.css";
 
 function formatDate(dateString) {
@@ -29,9 +29,54 @@ function Education({ personelId }) {
     additionalInformation: "",
     personelId: personelId,
   });
+  const [updateModalOpen, setUpdateModalOpen] = useState(false);
+  const [educationToUpdate, setEducationToUpdate] = useState(null);
 
   const toggleModal = () => {
     setModalOpen(!modalOpen);
+  };
+
+
+  const handleEducationUpdate = async () => {
+    try {
+      if (educationToUpdate) {
+        const updatedData = {
+          ...educationData,
+          educationType: educationData.educationType,
+          universityName: educationData.universityName,
+          educationStartDate: educationData.educationStartDate,
+          educationEndDate: educationData.educationEndDate,
+          additionalInformation: educationData.additionalInformation,
+        };
+        await updateEducation(educationToUpdate.id, updatedData);
+        setUpdateModalOpen(false);
+        setEducationData({
+          ...educationData,
+          educationType: '',
+          universityName: '',
+          educationStartDate: '',
+          educationEndDate: '',
+          additionalInformation: '',
+        });
+        alert('Education updated successfully');
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error("Error updating education:", error);
+    }
+  };
+
+  const openUpdateModal = (education) => {
+    setEducationToUpdate(education);
+    setEducationData({
+      ...educationData,
+      educationType: education.educationType,
+      universityName: education.universityName,
+      educationStartDate: education.educationStartDate,
+      educationEndDate: education.educationEndDate,
+      additionalInformation: education.additionalInformation,
+    });
+    setUpdateModalOpen(true);
   };
 
   const handleEducationSubmit = async () => {
@@ -100,6 +145,7 @@ function Education({ personelId }) {
             <th className="education-info-section">Mezuniyet Tarihi</th>
             <th className="education-info-section">Açıklama</th>
             <th className="education-info-section"></th>
+            <th className="education-info-section"></th>
           </tr>
           </thead>
           <tbody>
@@ -114,8 +160,11 @@ function Education({ personelId }) {
                 <td>
                   <button onClick={() => deleteEducationItem(edu.id)}>Delete</button>
                 </td>
+                <td>
+                  <button onClick={() => openUpdateModal(edu)}>Update</button>
+                </td>
               </tr>
-          ))}
+            ))}
           </tbody>
         </table>
         <div>
@@ -178,6 +227,68 @@ function Education({ personelId }) {
                       Submit
                     </button>
                     <button className="button" onClick={toggleModal}>
+                      Cancel
+                    </button>
+                  </footer>
+                </div>
+              </div>
+          )}
+          {updateModalOpen && (
+              <div className="modal is-active">
+                <div className="modal-background"></div>
+                <div className="modal-card">
+                  <header className="modal-card-head">
+                    <p className="modal-card-title">Update Education</p>
+                    <button
+                        className="delete"
+                        aria-label="close"
+                        onClick={() => setUpdateModalOpen(false)}
+                    ></button>
+                  </header>
+                  <section className="modal-card-body">
+                    <input
+                        className="input"
+                        type="text"
+                        placeholder="Education Type"
+                        name="educationType"
+                        value={educationData.educationType}
+                        onChange={handleInputChange}
+                    />
+                    <input
+                        className="input"
+                        type="text"
+                        placeholder="University Name"
+                        name="universityName"
+                        value={educationData.universityName}
+                        onChange={handleInputChange}
+                    />
+                    <input
+                        className="input"
+                        type="date"
+                        name="educationStartDate"
+                        value={educationData.educationStartDate}
+                        onChange={handleInputChange}
+                    />
+                    <input
+                        className="input"
+                        type="date"
+                        name="educationEndDate"
+                        value={educationData.educationEndDate}
+                        onChange={handleInputChange}
+                    />
+                    <textarea
+                        className="textarea"
+                        placeholder="Additional Information"
+                        name="additionalInformation"
+                        value={educationData.additionalInformation}
+                        onChange={handleInputChange}
+                    />
+                  </section>
+                  <footer className="modal-card-foot">
+                    <button className="button is-success" onClick={handleEducationUpdate}>
+                      Update
+                    </button>
+                    <button className="button" onClick={() => setUpdateModalOpen(false)}>
                       Cancel
                     </button>
                   </footer>

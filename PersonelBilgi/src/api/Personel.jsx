@@ -352,7 +352,7 @@ async function updateNewFile(fileId, fileDTO, file) {
 
     const url = `${API_BASE_URL}/file/updateNew/${fileId}`;
 
-    const result = await axios.post(url, formData, {
+    const result = await axios.put(url, formData, {
       headers: getHeaders(true),
     });
 

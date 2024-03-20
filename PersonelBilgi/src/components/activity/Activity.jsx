@@ -131,17 +131,18 @@ function Activity({ personelId }) {
 
       <table className="activity-details-container">
         <thead>
-          <tr>
-            <th className="activity-info-section">Etkinlik Türü</th>
-            <th className="activity-info-section">Etkinlik Adı</th>
-            <th className="activity-info-section">Link</th>
-            <th className="activity-info-section">Yüklenme Tarihi</th>
-            <th className="activity-info-section">Ek</th>
-            <th className="activity-info-section"></th>
-          </tr>
+        <tr>
+          <th className="activity-info-section">Etkinlik Türü</th>
+          <th className="activity-info-section">Etkinlik Adı</th>
+          <th className="activity-info-section">Link</th>
+          <th className="activity-info-section">Yüklenme Tarihi</th>
+          <th className="activity-info-section">Ek</th>
+          <th className="activity-info-section"></th>
+          <th className="activity-info-section"></th>
+        </tr>
         </thead>
         <tbody>
-          {activityDetails.map((detail, index) => (
+        {activityDetails.map((detail, index) => (
             <tr key={index}>
               <td>{removePrefix(detail.eventType)}</td>
               <td>{detail.activityName}</td>
@@ -152,17 +153,20 @@ function Activity({ personelId }) {
                 <button onClick={() => deletePersonelActivityItem(detail.id)}>
                   Delete
                 </button>
+
+              </td>
+              <td>
                 <button onClick={() => toggleUpdateModal(detail.id)}>
                   Güncelle
                 </button>
-              </td>
+                </td>
             </tr>
           ))}
         </tbody>
       </table>
       <div>
         {modalOpen && (
-          <div className="modal is-active">
+            <div className="modal is-active">
             <div className="modal-background"></div>
             <div className="modal-card">
               <header className="modal-card-head">

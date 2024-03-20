@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
-import {addProject, deleteProject, getProjectByPersonelId} from "../../api/Personel";
+import {addProject, deleteProject, getProjectByPersonelId, updateProject} from "../../api/Personel";
 import "./Project.css";
 
 function formatDate(dateString) {
@@ -22,6 +22,8 @@ function Project({ personelId }) {
   const [projectDetails, setProjectDetails] = useState([]);
   const [error, setError] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
+  const [updateModalOpen, setUpdateModalOpen] = useState(false);
+  const [projectToUpdate, setProjectToUpdate] = useState(null);
 
   const [projectData, setProjectData] = useState({
     projectName: "",
@@ -35,6 +37,42 @@ function Project({ personelId }) {
 
   const toggleModal = () => {
     setModalOpen(!modalOpen);
+  };
+
+  const handleProjectUpdate = async () => {
+    try {
+      if (projectToUpdate) {
+        const updatedProjectData = {
+          ...projectData,
+          projectName: projectData.projectName,
+          teamName: projectData.teamName,
+          projectTask: projectData.projectTask,
+          projectStartDate: projectData.projectStartDate,
+          projectFinishDate: projectData.projectFinishDate,
+          projectStatus: projectData.projectStatus,
+        };
+        await updateProject(projectToUpdate.id, updatedProjectData);
+        setUpdateModalOpen(false);
+        alert('Project updated successfully');
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error("Error updating project:", error);
+    }
+  };
+
+  const openUpdateModal = (project) => {
+    setProjectToUpdate(project);
+    setProjectData({
+      ...projectData,
+      projectName: project.projectName,
+      teamName: project.teamName,
+      projectTask: project.projectTask,
+      projectStartDate: project.projectStartDate,
+      projectFinishDate: project.projectFinishDate,
+      projectStatus: project.projectStatus,
+    });
+    setUpdateModalOpen(true);
   };
 
   const handleProjectionSubmit = async () => {
@@ -106,6 +144,7 @@ function Project({ personelId }) {
             <th className="project-info-section">Başlangıç Tarihi</th>
             <th className="project-info-section">Bitiş Tarihi</th>
             <th className="project-info-section"></th>
+            <th className="project-info-section"></th>
           </tr>
           </thead>
           <tbody>
@@ -121,6 +160,9 @@ function Project({ personelId }) {
                           ? formatDate(prj.projectFinishDate)
                           : "Bitiş Tarihi Girilmedi"
                       : "Devam Ediyor"}
+                </td>
+                <td>
+                  <button onClick={() => openUpdateModal(prj)}>Update</button>
                 </td>
                 <td>
                   <button onClick={() => deleteProjectItem(prj.id)}>Delete</button>
@@ -203,6 +245,78 @@ function Project({ personelId }) {
                       Submit
                     </button>
                     <button className="button" onClick={toggleModal}>
+                      Cancel
+                    </button>
+                  </footer>
+                </div>
+              </div>
+          )}
+          {updateModalOpen && (
+              <div className="modal is-active">
+                <div className="modal-background"></div>
+                <div className="modal-card">
+                  <header className="modal-card-head">
+                    <p className="modal-card-title">Update Project</p>
+                    <button
+                        className="delete"
+                        aria-label="close"
+                        onClick={() => setUpdateModalOpen(false)}
+                    ></button>
+                  </header>
+                  <section className="modal-card-body">
+                    <input
+                        className="input"
+                        type="text"
+                        placeholder="Project Name"
+                        name="projectName"
+                        value={projectData.projectName}
+                        onChange={handleInputChange}
+                    />
+                    <input
+                        className="input"
+                        type="text"
+                        placeholder="Team Name"
+                        name="teamName"
+                        value={projectData.teamName}
+                        onChange={handleInputChange}
+                    />
+                    <input
+                        className="input"
+                        type="text"
+                        placeholder="Task"
+                        name="projectTask"
+                        value={projectData.projectTask}
+                        onChange={handleInputChange}
+                    />
+                    <input
+                        className="input"
+                        type="date"
+                        name="projectStartDate"
+                        value={projectData.projectStartDate}
+                        onChange={handleInputChange}
+                    />
+                    <input
+                        className="input"
+                        type="date"
+                        name="projectFinishDate"
+                        value={projectData.projectFinishDate}
+                        onChange={handleInputChange}
+                    />
+                    <select
+                        className="input"
+                        name="projectStatus"
+                        value={projectData.projectStatus}
+                        onChange={handleInputChange}
+                    >
+                      <option value="false">Devam Ediyor</option>
+                      <option value="true">Bitti</option>
+                    </select>
+                  </section>
+                  <footer className="modal-card-foot">
+                    <button className="button is-success" onClick={handleProjectUpdate}>
+                      Update
+                    </button>
+                    <button className="button" onClick={() => setUpdateModalOpen(false)}>
                       Cancel
                     </button>
                   </footer>
