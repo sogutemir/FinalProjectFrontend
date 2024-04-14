@@ -18,7 +18,7 @@ async function deleteExperienceItem(experienceId) {
 }
 
 // eslint-disable-next-line react/prop-types
-function Experience({ personelId }) {
+function Experience({ personelId, isPersonels }) {
   const [experienceDetails, setExperienceDetails] = useState([]);
   const [error, setError] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
@@ -115,7 +115,7 @@ function Experience({ personelId }) {
 
   return (
       <div>
-        <button onClick={toggleModal}>Add Experience</button>
+        {isPersonels && (<button onClick={toggleModal}>Add Experience</button>)}
         <table className="experience-details-container">
           <thead>
           <tr>

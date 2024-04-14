@@ -105,6 +105,33 @@ const getExperienceByPersonelId = async (personelId) => {
     "Error getting experiences by personel ID"
   );
 };
+
+const getPersonelByTeamName = async (teamName) => {
+  const url = `${API_BASE_URL}/personel/getByTeamName/${teamName}`;
+  return apiCall(
+    url,
+    { headers: getHeaders() },
+    "Error getting personel by team name:"
+  );
+};
+
+async function getPersonelsWithRoles() {
+  const url = `${API_BASE_URL}/personel/allUser`;
+  return apiCall(
+    url,
+    { headers: getHeaders() },
+    "Error getting personel with roles"
+  );
+}
+
+async function getTeamnameByUsername(username) {
+  const url = `${API_BASE_URL}/personel/getTeamNameByUsername/${username}`;
+  return apiCall(
+    url,
+    { headers: getHeaders() },
+    "Error getting personel by team name:"
+  );
+}
 //#endregion
 
 //#region  AddMethods
@@ -516,6 +543,9 @@ export {
   getEducationByPersonelId,
   getProjectByPersonelId,
   getExperienceByPersonelId,
+  getPersonelByTeamName,
+  getTeamnameByUsername,
+  getPersonelsWithRoles,
 
   ///
   ///add methods

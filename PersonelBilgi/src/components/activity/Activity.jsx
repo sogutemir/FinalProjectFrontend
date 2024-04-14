@@ -30,7 +30,7 @@ function formatDate(dateString) {
   return new Date(dateString).toLocaleDateString("tr-TR", options);
 }
 
-function Activity({ personelId }) {
+function Activity({ personelId, isPersonels }) {
   const [activityDetails, setActivityDetails] = useState(null);
   const [error, setError] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
@@ -127,7 +127,9 @@ function Activity({ personelId }) {
 
   return (
     <div className="activity-container">
-      <button onClick={toggleModal}>Ekle</button>
+      {isPersonels && (
+        <button onClick={toggleModal}>Ekle</button>
+      )}
 
       <table className="activity-details-container">
         <thead>
@@ -227,15 +229,12 @@ function Activity({ personelId }) {
                 </div>
               </section>
               <footer className="modal-card-foot">
-                <button
-                  className="button is-success"
-                  onClick={handleUploadActivity}
-                >
-                  Save changes
-                </button>
-                <button className="button" onClick={toggleModal}>
-                  Cancel
-                </button>
+                  <button className="button is-success" onClick={handleUploadActivity}>
+                    Save changes
+                  </button>
+                  <button className="button" onClick={toggleModal}>
+                    Cancel
+                  </button>
               </footer>
             </div>
           </div>

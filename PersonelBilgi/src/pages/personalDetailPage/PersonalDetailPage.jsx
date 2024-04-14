@@ -13,12 +13,30 @@ function PersonalDetailPage() {
 
   return (
     <>
-      <PersonelInfo personelId={id} />
-      <Project personelId={id} />
-      <Education personelId={id} />
-      <Experience personelId={id} />
-      <Activity personelId={id} />
-      <PersonelFile personelId={id} />
+      <PersonelInfo 
+        personelId={id}
+        isPersonels={true}
+      />
+      <Project
+        personelId={id}
+        isPersonels={true}
+      />
+      <Education 
+        personelId={id}
+        isPersonels={true}
+      />
+      <Experience
+        personelId={id}
+        isPersonels={true}
+      />
+      <Activity
+        personelId={id}
+        isPersonels={true}
+      />
+      <PersonelFile 
+        personelId={id}
+        isPersonels={true}
+      />
     </>
   );
 }

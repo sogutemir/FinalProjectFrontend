@@ -18,7 +18,7 @@ async function deleteProjectItem(projectId) {
   }
 }
 
-function Project({ personelId }) {
+function Project({ personelId, isPersonels }) {
   const [projectDetails, setProjectDetails] = useState([]);
   const [error, setError] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
@@ -132,9 +132,12 @@ function Project({ personelId }) {
   return (
 
       <div>
-        <div style={{position: 'relative'}}>
-          <button style={{position: 'unset', top: 0, right: 0}} onClick={toggleModal}>Proje Ekle</button>
-        </div>
+        
+        {isPersonels && (
+          <div style={{position: 'relative'}}>
+            <button style={{position: 'unset', top: 0, right: 0}} onClick={toggleModal}>Proje Ekle</button>
+          </div>
+        )}
         <table className="project-details-container">
           <thead>
           <tr>

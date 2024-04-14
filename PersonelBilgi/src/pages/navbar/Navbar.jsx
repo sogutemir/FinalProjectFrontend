@@ -1,8 +1,36 @@
 // eslint-disable-next-line no-unused-vars
-import React from "react";
-import {Link} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { getTeamnameByUsername } from "../../api/Personel";
+import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 function Navbar() {
+  const [teamname, setTeamname] = useState("");
+  const [error, setError] = useState("");
+  useEffect(() => {
+    const token = Cookies.get("user_token");
+    const decodedToken = jwtDecode(token);
+
+    const fetchData = async () => {
+      try {
+        const response = await getTeamnameByUsername(decodedToken.sub);
+
+        console.log("response", response.data);
+        if (response.status === 200) {
+          setTeamname(response.data);
+        } else {
+          setError("Failed to load teamname from server");
+        }
+      } catch (error) {
+        setError("An error occurred while fetching team personels");
+        console.error("Error fetching team personels", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <>
       <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -32,8 +60,15 @@ function Navbar() {
         <div id="navbarBasicExample" className="navbar-menu">
           <div className="navbar-start">
             <a className="navbar-item">Genel</a>
-            <Link to='/contact' className='navbar-item'>Rehber</Link>
-            <Link to='/addperson' className='navbar-item'>Add Person</Link>
+            <Link to="/contact" className="navbar-item">
+              Rehber
+            </Link>
+            <Link to="/addperson" className="navbar-item">
+              Personel Ekle
+            </Link>
+            <Link to={`/teamname/${teamname}`} className="navbar-item">
+              Ekibim
+            </Link>
           </div>
         </div>
       </nav>

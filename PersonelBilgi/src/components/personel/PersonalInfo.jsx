@@ -8,7 +8,7 @@ import {
 import "./Personel.css";
 
 function PersonalInfo(props) {
-  const { personelId } = props;
+  const { personelId,isPersonels } = props;
   const [personel, setPersonel] = useState({
     name: "",
     surname: "",
@@ -478,9 +478,12 @@ function PersonalInfo(props) {
             />
           </div>
         </div>
-        <button className="personalInfo-save-button" onClick={handleUpdate}>
-          Kaydet
-        </button>
+        {isPersonels && (
+          <button className="personalInfo-save-button" onClick={handleUpdate}>
+            Kaydet
+          </button>
+        )}
+        
       </div>
     </>
   );

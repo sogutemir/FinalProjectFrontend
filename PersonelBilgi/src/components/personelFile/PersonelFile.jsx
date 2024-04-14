@@ -26,7 +26,7 @@ function formatDate(dateString) {
   return new Date(dateString).toLocaleDateString("tr-TR", options);
 }
 
-function PersonalFile({ personelId }) {
+function PersonalFile({ personelId, isPersonels}) {
   const [fileDetails, setFileDetails] = useState('');
   const [error, setError] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
@@ -79,7 +79,8 @@ function PersonalFile({ personelId }) {
 
   return (
     <div className="file-container">
-      <button onClick={toggleModal}>Ekle</button>
+      {isPersonels && (<button onClick={toggleModal}>Ekle</button>)}
+      
       <table className="file-details-container">
         <thead>
         <tr>

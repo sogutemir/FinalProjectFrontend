@@ -10,6 +10,8 @@ import "bulma/css/bulma.css";
 import "./index.css";
 import PersonelAdd from "./components/personel/PersonelAdd.jsx";
 import ContactPage from "./pages/contact/ContactPage.jsx";
+import PersonelsByTeamNamePage from "./pages/personalDetailPage/PersonelsByTeamNamePage.jsx";
+import AuthorizationPage from "./pages/authorizationPage/AuthorizationPage.jsx";
 
 function App() {
   return (
@@ -43,21 +45,46 @@ function App() {
             </PublicRoute>
           }
         />
-          <Route path="/addperson" element={
-              <PrivateRoute>
-                  <LayoutWithNavbar>
-                      <PersonelAdd />
-                  </LayoutWithNavbar>
-              </PrivateRoute>
-          }/>
-          <Route path="/contact" element={
-              <PrivateRoute>
-                  <LayoutWithNavbar>
-                      <ContactPage />
-                  </LayoutWithNavbar>
-              </PrivateRoute>
-          }/>
-
+        <Route
+          path="/addperson"
+          element={
+            <PrivateRoute>
+              <LayoutWithNavbar>
+                <PersonelAdd />
+              </LayoutWithNavbar>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/contact"
+          element={
+            <PrivateRoute>
+              <LayoutWithNavbar>
+                <ContactPage />
+              </LayoutWithNavbar>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/teamname/:teamName"
+          element={
+            <PrivateRoute>
+              <LayoutWithNavbar>
+                <PersonelsByTeamNamePage />
+              </LayoutWithNavbar>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/authorization"
+          element={
+            <PrivateRoute>
+              <LayoutWithNavbar>
+                <AuthorizationPage />
+              </LayoutWithNavbar>
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </Router>
   );

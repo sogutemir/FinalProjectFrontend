@@ -17,7 +17,7 @@ async function deleteEducationItem(educationId) {
   }
 }
 
-function Education({ personelId }) {
+function Education({ personelId, isPersonels }) {
   const [educationDetails, setEducationDetails] = useState([]);
   const [error, setError] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
@@ -134,7 +134,7 @@ function Education({ personelId }) {
 
   return (
       <div className="education-container">
-        <button onClick={toggleModal}>Add Education</button>
+        {isPersonels && (<button onClick={toggleModal}>Add Education</button>)}
         <table className="education-details-container">
           <thead>
           <tr>
