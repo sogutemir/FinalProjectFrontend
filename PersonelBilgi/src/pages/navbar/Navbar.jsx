@@ -69,6 +69,9 @@ function Navbar() {
             <Link to={`/teamname/${teamname}`} className="navbar-item">
               Ekibim
             </Link>
+            <div className="navbar-item">
+              Days Worked: {}
+            </div>
           </div>
         </div>
       </nav>

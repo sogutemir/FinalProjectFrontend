@@ -132,6 +132,15 @@ async function getTeamnameByUsername(username) {
     "Error getting personel by team name:"
   );
 }
+
+async function getUserByUsername(username) {
+  const url = `${API_BASE_URL}/personel/getPersonelByUsername/${username}`;
+  return apiCall(
+    url,
+    { headers: getHeaders() },
+    "Error getting personel by Username:"
+  );
+}
 //#endregion
 
 //#region  AddMethods
@@ -457,6 +466,24 @@ async function updateExperience(experienceId, experienceDTO) {
   }
 }
 
+async function updateUserRoles(userId, roleNames) {
+  try {
+    const roles = roleNames.map((name) => name.toUpperCase());
+
+    const url = `${API_BASE_URL}/user/${userId}/roles`;
+
+    const result = await axios.put(url, roles, {
+      headers: getHeaders(true),
+    });
+
+    return result.data;
+  } catch (error) {
+    checkResponseStatusCode(error.response.status);
+    console.error(error);
+    throw error;
+  }
+}
+
 //#endregion
 
 //#region  DeleteMethods
@@ -566,6 +593,7 @@ export {
   updateEducation,
   updateProject,
   updateExperience,
+  updateUserRoles,
   ///
   ///Delete Methods
   ///

@@ -1,20 +1,41 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
-import { getPersonelsWithRoles } from "../../api/Personel";
+import { getPersonelsWithRoles, updateUserRoles } from "../../api/Personel";
 
 function AuthorizationPage() {
   const [personels, setPersonels] = useState([]);
+  const [changes, setChanges] = useState([]);
   const [error, setError] = useState(null);
   const [editMode, setEditMode] = useState(false);
 
   const handleEdit = () => {
     setEditMode(!editMode);
   };
+  const updatePersonelRoles = async (personelId, roles) => {
+    try {
+      const response = await updateUserRoles(personelId, roles);
+      if (response.status === 200) {
+        // ...
+      } else {
+        setError("Failed to update personel roles");
+      }
+    } catch (error) {
+      setError("An error occurred while updating personel roles");
+      console.error("Error updating personel roles", error);
+    }
+  };
+
+  const handleUpdate = () => {
+    changes.forEach((change) => {
+      updatePersonelRoles(change.personId, change.roles);
+    });
+    console.log("Roles updated successfully.");
+  };
 
   const handleRoleChange = (personId, role, isChecked) => {
-    // Update person roles in an immutable way
     setPersonels(
       personels.map((person) => {
-        if (`${person.name} ${person.surname}` === personId) {
+        if (person.id === personId) {
           return {
             ...person,
             roles: isChecked
@@ -25,7 +46,41 @@ function AuthorizationPage() {
         return person;
       })
     );
+
+
+    setChanges((prevChanges) => {
+      if (prevChanges.length === 0) {
+        return personels.map((person) => ({
+          personId: person.id,
+          roles: person.roles,
+        }));
+      }
+
+      const existingChangeIndex = prevChanges.findIndex(
+        (change) => change.personId === personId
+      );
+
+      if (existingChangeIndex > -1) {
+        const newChanges = [...prevChanges];
+        const existingChange = newChanges[existingChangeIndex];
+
+        if (isChecked) {
+          existingChange.roles = [...existingChange.roles, role];
+        } else {
+          existingChange.roles = existingChange.roles.filter((r) => r !== role);
+        }
+
+        return newChanges;
+      } else {
+        return [...prevChanges, { personId, roles: [role] }];
+      }
+    });
+
   };
+
+  useEffect(() => {
+    console.log("Changes", changes);
+  }, [changes]);
 
   useEffect(() => {
     const fetchPersonelsWithRoles = async () => {
@@ -33,9 +88,10 @@ function AuthorizationPage() {
         const response = await getPersonelsWithRoles();
         if (response.status === 200) {
           const groupedPersonels = response.data.reduce((acc, person) => {
-            const id = `${person.name} ${person.surname}`;
+            const id = `${person.userId}`;
             if (!acc[id]) {
               acc[id] = {
+                id: person.userId,
                 name: person.name,
                 surname: person.surname,
                 roles: [],
@@ -77,9 +133,8 @@ function AuthorizationPage() {
         </thead>
         <tbody>
           {personels.map((person) => {
-            const personId = `${person.name} ${person.surname}`;
             return (
-              <tr key={personId}>
+              <tr key={person.id}>
                 <td>
                   {person.name} {person.surname}
                 </td>
@@ -90,7 +145,7 @@ function AuthorizationPage() {
                         type="checkbox"
                         checked={person.roles.includes(role)}
                         onChange={(e) =>
-                          handleRoleChange(personId, role, e.target.checked)
+                          handleRoleChange(person.id, role, e.target.checked)
                         }
                         disabled={!editMode}
                       />
@@ -102,7 +157,9 @@ function AuthorizationPage() {
           })}
         </tbody>
       </table>
-      <button onClick={handleEdit}>{editMode ? "Kaydet" : "Düzenle"}</button>
+      <button onClick={editMode ? handleUpdate : handleEdit}>
+        {editMode ? "Kaydet" : "Düzenle"}
+      </button>
     </div>
   );
 }

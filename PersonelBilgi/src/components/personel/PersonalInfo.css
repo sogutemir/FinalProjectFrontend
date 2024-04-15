@@ -1,0 +1,82 @@
+.personel-info-container {
+  display: grid;
+  justify-content: space-between;
+  padding: 20px;
+  background: #ffffff;
+  font-family: "Arial", sans-serif;
+}
+
+.personalInfo-personel-container,
+.personalInfo-corporation-container {
+  width: 48%;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.personalInfo-photo-section,
+.personalInfo-name-section,
+.personalInfo-TCID-section,
+.personalInfo-academic-title-section,
+.personalInfo-birthdate-section,
+.personalInfo-telephone-section,
+.personelInfo-emergency-contact-section,
+.personelInfo-address-section,
+.personalInfo-corporation-header,
+.personalInfo-job-entrance-section,
+.personalInfo-cadre-section,
+.personalInfo-department-container,
+.personalInfo-task-section,
+.personalInfo-personel-type-section,
+.personalInfo-work-status-section,
+.personalInfo-number-section {
+  margin-bottom: 20px;
+}
+
+.personalInfo-photo-section img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+}
+
+.personalInfo-save-button {
+  background-color: #8bc34a;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  display: block;
+  width: auto;
+  margin: 20px auto;
+  transition: background-color 0.3s;
+}
+.personalInfo-save-button:hover {
+  background-color: #7cb342;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="date"],
+input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+input[type="file"] {
+  border: none;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+}
+
+h2 {
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 5px;
+  margin-bottom: 20px;
+}

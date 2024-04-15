@@ -5,10 +5,11 @@ import {
   getResourcePhoto,
   updatePersonel,
 } from "../../api/Personel";
-import "./Personel.css";
+// import "./Personel.css";
+import "./PersonalInfo.css";
 
 function PersonalInfo(props) {
-  const { personelId,isPersonels } = props;
+  const { personelId, isPersonels } = props;
   const [personel, setPersonel] = useState({
     name: "",
     surname: "",
@@ -483,7 +484,6 @@ function PersonalInfo(props) {
             Kaydet
           </button>
         )}
-        
       </div>
     </>
   );
