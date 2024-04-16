@@ -1,6 +1,11 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
-import {getEducationByPersonelId, addEducation, deleteEducation, updateEducation} from "../../api/Personel";
+import {
+  getEducationByPersonelId,
+  addEducation,
+  deleteEducation,
+  updateEducation,
+} from "../../api/Personel";
 import "./Education.css";
 
 function formatDate(dateString) {
@@ -36,7 +41,6 @@ function Education({ personelId, isPersonels }) {
     setModalOpen(!modalOpen);
   };
 
-
   const handleEducationUpdate = async () => {
     try {
       if (educationToUpdate) {
@@ -52,13 +56,13 @@ function Education({ personelId, isPersonels }) {
         setUpdateModalOpen(false);
         setEducationData({
           ...educationData,
-          educationType: '',
-          universityName: '',
-          educationStartDate: '',
-          educationEndDate: '',
-          additionalInformation: '',
+          educationType: "",
+          universityName: "",
+          educationStartDate: "",
+          educationEndDate: "",
+          additionalInformation: "",
         });
-        alert('Education updated successfully');
+        alert("Education updated successfully");
         window.location.reload();
       }
     } catch (error) {
@@ -133,10 +137,10 @@ function Education({ personelId, isPersonels }) {
   }
 
   return (
-      <div className="education-container">
-        {isPersonels && (<button onClick={toggleModal}>Add Education</button>)}
-        <table className="education-details-container">
-          <thead>
+    <div className="education-container">
+      {isPersonels && <button onClick={toggleModal}>Add Education</button>}
+      <table className="education-details-container">
+        <thead>
           <tr>
             <th className="education-info-section">Eğitim Türü</th>
             <th className="education-info-section">Üniversite/Okul</th>
@@ -144,159 +148,171 @@ function Education({ personelId, isPersonels }) {
             <th className="education-info-section">Başlangıç Tarihi</th>
             <th className="education-info-section">Mezuniyet Tarihi</th>
             <th className="education-info-section">Açıklama</th>
-            <th className="education-info-section"></th>
-            <th className="education-info-section"></th>
+            {isPersonels && <th className="education-info-section"></th>}
+            {isPersonels && <th className="education-info-section"></th>}
           </tr>
-          </thead>
-          <tbody>
+        </thead>
+        <tbody>
           {educationDetails.map((edu, index) => (
-              <tr key={index}>
-                <td>{edu.educationType}</td>
-                <td>{edu.universityName}</td>
-                <td>{edu.department}</td>
-                <td>{formatDate(edu.educationStartDate)}</td>
-                <td>{formatDate(edu.educationEndDate)}</td>
-                <td>{edu.additionalInformation}</td>
+            <tr key={index}>
+              <td>{edu.educationType}</td>
+              <td>{edu.universityName}</td>
+              <td>{edu.department}</td>
+              <td>{formatDate(edu.educationStartDate)}</td>
+              <td>{formatDate(edu.educationEndDate)}</td>
+              <td>{edu.additionalInformation}</td>
+              {isPersonels && (
                 <td>
-                  <button onClick={() => deleteEducationItem(edu.id)}>Delete</button>
+                  <button onClick={() => openUpdateModal(edu)}>Güncelle</button>
                 </td>
+              )}
+              {isPersonels && (
                 <td>
-                  <button onClick={() => openUpdateModal(edu)}>Update</button>
+                  <button onClick={() => deleteEducationItem(edu.id)}>
+                    Sil
+                  </button>
                 </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div>
-          {modalOpen && (
-              <div className="modal is-active">
-                <div className="modal-background"></div>
-                <div className="modal-card">
-                  <header className="modal-card-head">
-                    <p className="modal-card-title">Add Education</p>
-                    <button
-                        className="delete"
-                        aria-label="close"
-                        onClick={toggleModal}
-                    ></button>
-                  </header>
-                  <section className="modal-card-body">
-                    <input
-                        className="input"
-                        type="text"
-                        placeholder="Education Type"
-                        name="educationType"
-                        value={educationData.educationType}
-                        onChange={handleInputChange}
-                    />
-                    <input
-                        className="input"
-                        type="text"
-                        placeholder="University Name"
-                        name="universityName"
-                        value={educationData.universityName}
-                        onChange={handleInputChange}
-                    />
-                    <input
-                        className="input"
-                        type="date"
-                        name="educationStartDate"
-                        value={educationData.educationStartDate}
-                        onChange={handleInputChange}
-                    />
-                    <input
-                        className="input"
-                        type="date"
-                        name="educationEndDate"
-                        value={educationData.educationEndDate}
-                        onChange={handleInputChange}
-                    />
-                    <textarea
-                        className="textarea"
-                        placeholder="Additional Information"
-                        name="additionalInformation"
-                        value={educationData.additionalInformation}
-                        onChange={handleInputChange}
-                    />
-                  </section>
-                  <footer className="modal-card-foot">
-                    <button
-                        className="button is-success"
-                        onClick={handleEducationSubmit}
-                    >
-                      Submit
-                    </button>
-                    <button className="button" onClick={toggleModal}>
-                      Cancel
-                    </button>
-                  </footer>
-                </div>
-              </div>
-          )}
-          {updateModalOpen && (
-              <div className="modal is-active">
-                <div className="modal-background"></div>
-                <div className="modal-card">
-                  <header className="modal-card-head">
-                    <p className="modal-card-title">Update Education</p>
-                    <button
-                        className="delete"
-                        aria-label="close"
-                        onClick={() => setUpdateModalOpen(false)}
-                    ></button>
-                  </header>
-                  <section className="modal-card-body">
-                    <input
-                        className="input"
-                        type="text"
-                        placeholder="Education Type"
-                        name="educationType"
-                        value={educationData.educationType}
-                        onChange={handleInputChange}
-                    />
-                    <input
-                        className="input"
-                        type="text"
-                        placeholder="University Name"
-                        name="universityName"
-                        value={educationData.universityName}
-                        onChange={handleInputChange}
-                    />
-                    <input
-                        className="input"
-                        type="date"
-                        name="educationStartDate"
-                        value={educationData.educationStartDate}
-                        onChange={handleInputChange}
-                    />
-                    <input
-                        className="input"
-                        type="date"
-                        name="educationEndDate"
-                        value={educationData.educationEndDate}
-                        onChange={handleInputChange}
-                    />
-                    <textarea
-                        className="textarea"
-                        placeholder="Additional Information"
-                        name="additionalInformation"
-                        value={educationData.additionalInformation}
-                        onChange={handleInputChange}
-                    />
-                  </section>
-                  <footer className="modal-card-foot">
-                    <button className="button is-success" onClick={handleEducationUpdate}>
-                      Update
-                    </button>
-                    <button className="button" onClick={() => setUpdateModalOpen(false)}>
-                      Cancel
-                    </button>
-                  </footer>
-                </div>
-              </div>
-          )}
-        </div>
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div>
+        {modalOpen && (
+          <div className="modal is-active">
+            <div className="modal-background"></div>
+            <div className="modal-card">
+              <header className="modal-card-head">
+                <p className="modal-card-title">Add Education</p>
+                <button
+                  className="delete"
+                  aria-label="close"
+                  onClick={toggleModal}
+                ></button>
+              </header>
+              <section className="modal-card-body">
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="Education Type"
+                  name="educationType"
+                  value={educationData.educationType}
+                  onChange={handleInputChange}
+                />
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="University Name"
+                  name="universityName"
+                  value={educationData.universityName}
+                  onChange={handleInputChange}
+                />
+                <input
+                  className="input"
+                  type="date"
+                  name="educationStartDate"
+                  value={educationData.educationStartDate}
+                  onChange={handleInputChange}
+                />
+                <input
+                  className="input"
+                  type="date"
+                  name="educationEndDate"
+                  value={educationData.educationEndDate}
+                  onChange={handleInputChange}
+                />
+                <textarea
+                  className="textarea"
+                  placeholder="Additional Information"
+                  name="additionalInformation"
+                  value={educationData.additionalInformation}
+                  onChange={handleInputChange}
+                />
+              </section>
+              <footer className="modal-card-foot">
+                <button
+                  className="button is-success"
+                  onClick={handleEducationSubmit}
+                >
+                  Submit
+                </button>
+                <button className="button" onClick={toggleModal}>
+                  Cancel
+                </button>
+              </footer>
+            </div>
+          </div>
+        )}
+        {updateModalOpen && (
+          <div className="modal is-active">
+            <div className="modal-background"></div>
+            <div className="modal-card">
+              <header className="modal-card-head">
+                <p className="modal-card-title">Update Education</p>
+                <button
+                  className="delete"
+                  aria-label="close"
+                  onClick={() => setUpdateModalOpen(false)}
+                ></button>
+              </header>
+              <section className="modal-card-body">
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="Education Type"
+                  name="educationType"
+                  value={educationData.educationType}
+                  onChange={handleInputChange}
+                />
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="University Name"
+                  name="universityName"
+                  value={educationData.universityName}
+                  onChange={handleInputChange}
+                />
+                <input
+                  className="input"
+                  type="date"
+                  name="educationStartDate"
+                  value={educationData.educationStartDate}
+                  onChange={handleInputChange}
+                />
+                <input
+                  className="input"
+                  type="date"
+                  name="educationEndDate"
+                  value={educationData.educationEndDate}
+                  onChange={handleInputChange}
+                />
+                <textarea
+                  className="textarea"
+                  placeholder="Additional Information"
+                  name="additionalInformation"
+                  value={educationData.additionalInformation}
+                  onChange={handleInputChange}
+                />
+              </section>
+              <footer className="modal-card-foot">
+                <button
+                  className="button is-success"
+                  onClick={handleEducationUpdate}
+                >
+                  Update
+                </button>
+                <button
+                  className="button"
+                  onClick={() => setUpdateModalOpen(false)}
+                >
+                  Cancel
+                </button>
+              </footer>
+            </div>
+          </div>
+        )}
       </div>
+    </div>
   );
 }
 

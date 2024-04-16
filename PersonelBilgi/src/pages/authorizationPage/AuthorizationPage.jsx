@@ -30,6 +30,7 @@ function AuthorizationPage() {
       updatePersonelRoles(change.personId, change.roles);
     });
     console.log("Roles updated successfully.");
+    window.location.reload();
   };
 
   const handleRoleChange = (personId, role, isChecked) => {
@@ -115,9 +116,6 @@ function AuthorizationPage() {
     fetchPersonelsWithRoles();
   }, []);
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
 
   return (
     <div>

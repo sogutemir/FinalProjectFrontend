@@ -76,7 +76,7 @@ function Activity({ personelId, isPersonels }) {
 
   const handleUpdateActivity = () => {
     const newActivity = { activityName, description, eventType, link };
-    
+
     updateActivity(updateOldActivity.id, newActivity, activity).then(() => {
       setActivityName("");
       setDescription("");
@@ -87,7 +87,6 @@ function Activity({ personelId, isPersonels }) {
       alert("Activity updated successfully");
       window.location.reload();
     });
-  
   };
 
   const handleActivityChange = (e) => {
@@ -127,48 +126,49 @@ function Activity({ personelId, isPersonels }) {
 
   return (
     <div className="activity-container">
-      {isPersonels && (
-        <button onClick={toggleModal}>Ekle</button>
-      )}
+      {isPersonels && <button onClick={toggleModal}>Ekle</button>}
 
       <table className="activity-details-container">
         <thead>
-        <tr>
-          <th className="activity-info-section">Etkinlik Türü</th>
-          <th className="activity-info-section">Etkinlik Adı</th>
-          <th className="activity-info-section">Link</th>
-          <th className="activity-info-section">Yüklenme Tarihi</th>
-          <th className="activity-info-section">Ek</th>
-          <th className="activity-info-section"></th>
-          <th className="activity-info-section"></th>
-        </tr>
+          <tr>
+            <th className="activity-info-section">Etkinlik Türü</th>
+            <th className="activity-info-section">Etkinlik Adı</th>
+            <th className="activity-info-section">Link</th>
+            <th className="activity-info-section">Yüklenme Tarihi</th>
+            <th className="activity-info-section">Ek</th>
+            {isPersonels && <th className="activity-info-section"></th>}
+            {isPersonels && <th className="activity-info-section"></th>}
+          </tr>
         </thead>
         <tbody>
-        {activityDetails.map((detail, index) => (
+          {activityDetails.map((detail, index) => (
             <tr key={index}>
               <td>{removePrefix(detail.eventType)}</td>
               <td>{detail.activityName}</td>
               <td>{detail.link}</td>
               <td>{formatDate(detail.uploadDate)}</td>
               <td>{detail.fileName}</td>
-              <td>
-                <button onClick={() => deletePersonelActivityItem(detail.id)}>
-                  Delete
-                </button>
-
-              </td>
-              <td>
-                <button onClick={() => toggleUpdateModal(detail.id)}>
-                  Güncelle
-                </button>
+              {isPersonels && (
+                <td>
+                  <button onClick={() => toggleUpdateModal(detail.id)}>
+                    Güncelle
+                  </button>
                 </td>
+              )}
+              {isPersonels && (
+                <td>
+                  <button onClick={() => deletePersonelActivityItem(detail.id)}>
+                    Sil
+                  </button>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
       </table>
       <div>
         {modalOpen && (
-            <div className="modal is-active">
+          <div className="modal is-active">
             <div className="modal-background"></div>
             <div className="modal-card">
               <header className="modal-card-head">
@@ -222,19 +222,24 @@ function Activity({ personelId, isPersonels }) {
                           <span className="file-icon"></span>
                           <span className="file-label"></span>
                         </span>
-                        <span className="file-name">{fileName || "Dosya Seçiniz"}</span>
+                        <span className="file-name">
+                          {fileName || "Dosya Seçiniz"}
+                        </span>
                       </label>
                     </div>
                   </div>
                 </div>
               </section>
               <footer className="modal-card-foot">
-                  <button className="button is-success" onClick={handleUploadActivity}>
-                    Save changes
-                  </button>
-                  <button className="button" onClick={toggleModal}>
-                    Cancel
-                  </button>
+                <button
+                  className="button is-success"
+                  onClick={handleUploadActivity}
+                >
+                  Save changes
+                </button>
+                <button className="button" onClick={toggleModal}>
+                  Cancel
+                </button>
               </footer>
             </div>
           </div>
@@ -294,9 +299,7 @@ function Activity({ personelId, isPersonels }) {
                           <span className="file-icon"></span>
                           <span className="file-label"></span>
                         </span>
-                        <span className="file-name">
-                          {fileName}
-                        </span>
+                        <span className="file-name">{fileName}</span>
                       </label>
                     </div>
                   </div>

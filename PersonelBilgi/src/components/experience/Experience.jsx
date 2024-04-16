@@ -1,11 +1,16 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
-import {deleteExperience, getExperienceByPersonelId, addExperience, updateExperience} from "../../api/Personel";
+import {
+  deleteExperience,
+  getExperienceByPersonelId,
+  addExperience,
+  updateExperience,
+} from "../../api/Personel";
 import "./Experience.css";
 
 function formatDate(dateString) {
-  const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-  return new Date(dateString).toLocaleDateString('tr-TR', options);
+  const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+  return new Date(dateString).toLocaleDateString("tr-TR", options);
 }
 
 async function deleteExperienceItem(experienceId) {
@@ -37,7 +42,7 @@ function Experience({ personelId, isPersonels }) {
       if (experienceToUpdate) {
         await updateExperience(experienceToUpdate.id, experienceData);
         setUpdateModalOpen(false);
-        alert('Experience updated successfully');
+        alert("Experience updated successfully");
         window.location.reload();
       }
     } catch (error) {
@@ -114,10 +119,10 @@ function Experience({ personelId, isPersonels }) {
   }
 
   return (
-      <div>
-        {isPersonels && (<button onClick={toggleModal}>Add Experience</button>)}
-        <table className="experience-details-container">
-          <thead>
+    <div>
+      {isPersonels && <button onClick={toggleModal}>Add Experience</button>}
+      <table className="experience-details-container">
+        <thead>
           <tr>
             <th className="experience-info-section">Çalıştığı Kurum Adı</th>
             <th className="experience-info-section">Çalıştığı Pozisyon</th>
@@ -125,181 +130,188 @@ function Experience({ personelId, isPersonels }) {
             <th className="experience-info-section">İşe Başlama Tarihi</th>
             <th className="experience-info-section">İşten Çıkış Tarihi</th>
             <th className="experience-info-section">İşten Ayrılış Nedeni</th>
-            <th className="experience-info-section"></th>
-            <th className="experience-info-section"></th>
+            {isPersonels && <th className="experience-info-section"></th>}
+            {isPersonels && <th className="experience-info-section"></th>}
           </tr>
-          </thead>
-          <tbody>
+        </thead>
+        <tbody>
           {experienceDetails.map((exp, index) => (
-              <tr key={index}>
-                <td>{exp.institutionName}</td>
-                <td>{exp.workPosition}</td>
-                <td>{exp.workType}</td>
-                <td>{formatDate(exp.jobStartDate)}</td>
-                <td>{formatDate(exp.jobEndDate)}</td>
-                <td>{exp.workDescription}</td>
+            <tr key={index}>
+              <td>{exp.institutionName}</td>
+              <td>{exp.workPosition}</td>
+              <td>{exp.workType}</td>
+              <td>{formatDate(exp.jobStartDate)}</td>
+              <td>{formatDate(exp.jobEndDate)}</td>
+              <td>{exp.workDescription}</td>
+              {isPersonels && (
                 <td>
-                  <button onClick={() => deleteExperienceItem(exp.id)}>Delete</button>
+                  <button onClick={() => openUpdateModal(exp)}>Güncelle</button>
                 </td>
+              )}
+              {isPersonels && (
                 <td>
-                  <button onClick={() => openUpdateModal(exp)}>Update</button>
+                  <button onClick={() => deleteExperienceItem(exp.id)}>
+                    Sil
+                  </button>
                 </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div>
-          {modalOpen && (
-              <div className="modal is-active">
-                <div className="modal-card">
-                  <header className="modal-card-head">
-                    <p className="modal-card-title">Add Experience</p>
-                    <button
-                        className="delete"
-                        aria-label="close"
-                        onClick={toggleModal}
-                    ></button>
-                  </header>
-                  <section className="modal-card-body">
-                    <input
-                        className="input"
-                        type="text"
-                        placeholder="Institution Name"
-                        name="institutionName"
-                        value={experienceData.institutionName}
-                        onChange={handleInputChange}
-                    />
-                    <input
-                        className="input"
-                        type="text"
-                        placeholder="Work Type"
-                        name="workType"
-                        value={experienceData.workType}
-                        onChange={handleInputChange}
-                    />
-                    <input
-                        className="input"
-                        type="text"
-                        placeholder="Work Position"
-                        name="workPosition"
-                        value={experienceData.workPosition}
-                        onChange={handleInputChange}
-                    />
-                    <input
-                        className="input"
-                        type="date"
-                        name="jobStartDate"
-                        value={experienceData.jobStartDate}
-                        onChange={handleInputChange}
-                    />
-                    <input
-                        className="input"
-                        type="date"
-                        name="jobEndDate"
-                        value={experienceData.jobEndDate}
-                        onChange={handleInputChange}
-                    />
-                    <input
-                        className="input"
-                        type="text"
-                        placeholder="Work Description"
-                        name="workDescription"
-                        value={experienceData.workDescription}
-                        onChange={handleInputChange}
-                    />
-                  </section>
-                  <footer className="modal-card-foot">
-                    <button
-                        className="button is-success"
-                        onClick={handleExperienceSubmit}
-                    >
-                      Submit
-                    </button>
-                    <button className="button" onClick={toggleModal}>
-                      Cancel
-                    </button>
-                  </footer>
-                </div>
-              </div>
-          )}
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div>
+        {modalOpen && (
+          <div className="modal is-active">
+            <div className="modal-card">
+              <header className="modal-card-head">
+                <p className="modal-card-title">Add Experience</p>
+                <button
+                  className="delete"
+                  aria-label="close"
+                  onClick={toggleModal}
+                ></button>
+              </header>
+              <section className="modal-card-body">
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="Institution Name"
+                  name="institutionName"
+                  value={experienceData.institutionName}
+                  onChange={handleInputChange}
+                />
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="Work Type"
+                  name="workType"
+                  value={experienceData.workType}
+                  onChange={handleInputChange}
+                />
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="Work Position"
+                  name="workPosition"
+                  value={experienceData.workPosition}
+                  onChange={handleInputChange}
+                />
+                <input
+                  className="input"
+                  type="date"
+                  name="jobStartDate"
+                  value={experienceData.jobStartDate}
+                  onChange={handleInputChange}
+                />
+                <input
+                  className="input"
+                  type="date"
+                  name="jobEndDate"
+                  value={experienceData.jobEndDate}
+                  onChange={handleInputChange}
+                />
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="Work Description"
+                  name="workDescription"
+                  value={experienceData.workDescription}
+                  onChange={handleInputChange}
+                />
+              </section>
+              <footer className="modal-card-foot">
+                <button
+                  className="button is-success"
+                  onClick={handleExperienceSubmit}
+                >
+                  Submit
+                </button>
+                <button className="button" onClick={toggleModal}>
+                  Cancel
+                </button>
+              </footer>
+            </div>
+          </div>
+        )}
 
-          {updateModalOpen && (
-              <div className="modal is-active">
-                <div className="modal-card">
-                  <header className="modal-card-head">
-                    <p className="modal-card-title">Update Experience</p>
-                    <button
-                        className="delete"
-                        aria-label="close"
-                        onClick={() => setUpdateModalOpen(false)}
-                    ></button>
-                  </header>
-                  <section className="modal-card-body">
-                    <input
-                        className="input"
-                        type="text"
-                        placeholder="Institution Name"
-                        name="institutionName"
-                        value={experienceData.institutionName}
-                        onChange={handleInputChange}
-                    />
-                    <input
-                        className="input"
-                        type="text"
-                        placeholder="Work Type"
-                        name="workType"
-                        value={experienceData.workType}
-                        onChange={handleInputChange}
-                    />
-                    <input
-                        className="input"
-                        type="text"
-                        placeholder="Work Position"
-                        name="workPosition"
-                        value={experienceData.workPosition}
-                        onChange={handleInputChange}
-                    />
-                    <input
-                        className="input"
-                        type="date"
-                        name="jobStartDate"
-                        value={experienceData.jobStartDate}
-                        onChange={handleInputChange}
-                    />
-                    <input
-                        className="input"
-                        type="date"
-                        name="jobEndDate"
-                        value={experienceData.jobEndDate}
-                        onChange={handleInputChange}
-                    />
-                    <input
-                        className="input"
-                        type="text"
-                        placeholder="Work Description"
-                        name="workDescription"
-                        value={experienceData.workDescription}
-                        onChange={handleInputChange}
-                    />
-                  </section>
-                  <footer className="modal-card-foot">
-                    <button
-                        className="button is-success"
-                        onClick={handleExperienceUpdate}
-                    >
-                      Update
-                    </button>
-                    <button className="button" onClick={() => setUpdateModalOpen(false)}>
-                      Cancel
-                    </button>
-                  </footer>
-                </div>
-              </div>
-          )}
-
-        </div>
+        {updateModalOpen && (
+          <div className="modal is-active">
+            <div className="modal-card">
+              <header className="modal-card-head">
+                <p className="modal-card-title">Update Experience</p>
+                <button
+                  className="delete"
+                  aria-label="close"
+                  onClick={() => setUpdateModalOpen(false)}
+                ></button>
+              </header>
+              <section className="modal-card-body">
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="Institution Name"
+                  name="institutionName"
+                  value={experienceData.institutionName}
+                  onChange={handleInputChange}
+                />
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="Work Type"
+                  name="workType"
+                  value={experienceData.workType}
+                  onChange={handleInputChange}
+                />
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="Work Position"
+                  name="workPosition"
+                  value={experienceData.workPosition}
+                  onChange={handleInputChange}
+                />
+                <input
+                  className="input"
+                  type="date"
+                  name="jobStartDate"
+                  value={experienceData.jobStartDate}
+                  onChange={handleInputChange}
+                />
+                <input
+                  className="input"
+                  type="date"
+                  name="jobEndDate"
+                  value={experienceData.jobEndDate}
+                  onChange={handleInputChange}
+                />
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="Work Description"
+                  name="workDescription"
+                  value={experienceData.workDescription}
+                  onChange={handleInputChange}
+                />
+              </section>
+              <footer className="modal-card-foot">
+                <button
+                  className="button is-success"
+                  onClick={handleExperienceUpdate}
+                >
+                  Update
+                </button>
+                <button
+                  className="button"
+                  onClick={() => setUpdateModalOpen(false)}
+                >
+                  Cancel
+                </button>
+              </footer>
+            </div>
+          </div>
+        )}
       </div>
-
+    </div>
   );
 }
 

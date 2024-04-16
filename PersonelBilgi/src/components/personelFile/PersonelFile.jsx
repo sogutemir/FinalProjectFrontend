@@ -1,13 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
-import {deleteFile, getFileByPersonelId} from "../../api/Personel";
+import { deleteFile, getFileByPersonelId } from "../../api/Personel";
 import { addFile } from "../../api/Personel";
 import "./PersonelFile.css";
 
 function removePrefix(inputString) {
   if (inputString) {
-    const parts = inputString.split('/');
-    return parts.length > 1 ? '.' + parts[1] : '.' + inputString;
+    const parts = inputString.split("/");
+    return parts.length > 1 ? "." + parts[1] : "." + inputString;
   }
   return inputString;
 }
@@ -26,14 +26,13 @@ function formatDate(dateString) {
   return new Date(dateString).toLocaleDateString("tr-TR", options);
 }
 
-function PersonalFile({ personelId, isPersonels}) {
-  const [fileDetails, setFileDetails] = useState('');
+function PersonalFile({ personelId, isPersonels }) {
+  const [fileDetails, setFileDetails] = useState("");
   const [error, setError] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
-  const [section, setSection] = useState('');
+  const [section, setSection] = useState("");
   const [file, setFile] = useState();
 
-  
   const toggleModal = () => {
     setModalOpen(!modalOpen);
   };
@@ -41,7 +40,7 @@ function PersonalFile({ personelId, isPersonels}) {
   const handleUploadFile = () => {
     addFile(file, section, personelId, () => {
       setFile(null);
-      setSection('');
+      setSection("");
     });
   };
 
@@ -79,84 +78,90 @@ function PersonalFile({ personelId, isPersonels}) {
 
   return (
     <div className="file-container">
-      {isPersonels && (<button onClick={toggleModal}>Ekle</button>)}
-      
+      {isPersonels && <button onClick={toggleModal}>Ekle</button>}
+
       <table className="file-details-container">
         <thead>
-        <tr>
-          <th className="file-info-section">Dosya Türü</th>
-          <th className="file-info-section">Dosya Adı</th>
-          <th className="file-info-section">Bölüm</th>
-          <th className="file-info-section">Yüklenme Tarihi</th>
-          <th className="file-info-section"></th>
-        </tr>
+          <tr>
+            <th className="file-info-section">Dosya Türü</th>
+            <th className="file-info-section">Dosya Adı</th>
+            <th className="file-info-section">Bölüm</th>
+            <th className="file-info-section">Yüklenme Tarihi</th>
+            {isPersonels && <th className="file-info-section"></th>}
+          </tr>
         </thead>
         <tbody>
-        {fileDetails.map((detail, index) => (
+          {fileDetails.map((detail, index) => (
             <tr key={index}>
               <td>{removePrefix(detail.fileType)}</td>
               <td>{detail.fileName}</td>
               <td>{detail.section}</td>
               <td>{formatDate(detail.uploadDate)}</td>
+              {isPersonels && (
                 <td>
-                    <button onClick={() => deletePersonelFileItem(detail.id)}>Delete</button>
+                  <button onClick={() => deletePersonelFileItem(detail.id)}>
+                    Sil
+                  </button>
                 </td>
+              )}
             </tr>
           ))}
         </tbody>
       </table>
       <div>
-      {modalOpen && (
-        <div className="modal is-active">
-          <div className="modal-background"></div>
-          <div className="modal-card">
-            <header className="modal-card-head">
-              <p className="modal-card-title">Modal title</p>
-              <button
-                className="delete"
-                aria-label="close"
-                onClick={toggleModal}
-              ></button>
-            </header>
-            <section className="modal-card-body">
-              <input
-                className="input"
-                type="text"
-                placeholder="Text input"
-                value={section}
-                onChange={(e) => setSection(e.target.value)}
-              />
-              <div>
-                <div className="file has-name">
-                  <label className="file-label">
-                    <input
-                      className="file-input"
-                      type="file"
-                      name="resume"
-                      onChange={handleFileChange}
-                    />
-                    <span className="file-cta">
-                      <span className="file-icon">
+        {modalOpen && (
+          <div className="modal is-active">
+            <div className="modal-background"></div>
+            <div className="modal-card">
+              <header className="modal-card-head">
+                <p className="modal-card-title">Modal title</p>
+                <button
+                  className="delete"
+                  aria-label="close"
+                  onClick={toggleModal}
+                ></button>
+              </header>
+              <section className="modal-card-body">
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="Text input"
+                  value={section}
+                  onChange={(e) => setSection(e.target.value)}
+                />
+                <div>
+                  <div className="file has-name">
+                    <label className="file-label">
+                      <input
+                        className="file-input"
+                        type="file"
+                        name="resume"
+                        onChange={handleFileChange}
+                      />
+                      <span className="file-cta">
+                        <span className="file-icon"></span>
+                        <span className="file-label"></span>
                       </span>
-                      <span className="file-label"></span>
-                    </span>
-                    <span className="file-name">Dosya Seçiniz</span>
-                  </label>
+                      <span className="file-name">Dosya Seçiniz</span>
+                    </label>
+                  </div>
                 </div>
-              </div>
-            </section>
-            <footer className="modal-card-foot">
-              <button className="button is-success" onClick={handleUploadFile}>
-                Save changes
-              </button>
-              <button className="button" onClick={toggleModal}>
-                Cancel
-              </button>
-            </footer>
+              </section>
+              <footer className="modal-card-foot">
+                <button
+                  className="button is-success"
+                  onClick={handleUploadFile}
+                >
+                  Save changes
+                </button>
+                <button className="button" onClick={toggleModal}>
+                  Cancel
+                </button>
+              </footer>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
     </div>
   );
 }
